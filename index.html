@@ -2,28 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Rizz Web — Version 2.4 (Notes Authority)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rizz Web — Version 2.4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
   <div class="app">
+
     <h1>Rizz Web</h1>
     <div class="sub">Version 2.4 — Notes Authority</div>
 
     <!-- DASHBOARD -->
     <div id="dashboard" class="card dashboard">
-      <h3>💘 Today's Dashboard</h3>
+      <h3>💘 Today’s Dashboard</h3>
       <div class="dash-item">🎯 Focus: <span id="dashFocus">—</span></div>
       <div class="dash-item">⏸ Pause: <span id="dashPause">—</span></div>
-      <div class="dash-item warning">⚠️ <span id="dashWarning">—</span></div>
-      <div class="dash-item action">🧠 Action: <span id="dashAction">Add someone to begin.</span></div>
+      <div class="dash-item">🧠 Action: <span id="dashAction">Add someone to begin.</span></div>
     </div>
 
     <div class="card status">✅ Version 2.4 running (Notes Authority)</div>
 
-    <!-- ADD PERSON -->
+    <!-- ADD FORM -->
     <form id="addForm" class="card">
       <input name="name" placeholder="Name" required />
 
@@ -33,6 +32,7 @@
         <button type="button" data-status="dating">💞 Dating</button>
         <button type="button" data-status="pause">⏸ Pause</button>
       </div>
+
       <input type="hidden" name="status" value="crush" />
 
       <div class="label">Set Focus</div>
@@ -41,9 +41,11 @@
         <span id="focusValue">0%</span>
         <button type="button" id="plus">+</button>
       </div>
+
       <input type="hidden" name="focus" value="0" />
 
-      <textarea name="notes" placeholder="Optional quick note (can expand later in Edit)"></textarea>
+      <textarea name="quickNote" placeholder="Optional quick note (can expand later in Edit)"></textarea>
+
       <input name="reminder" placeholder="Reminder (optional)" />
 
       <button type="submit">Add</button>
@@ -53,52 +55,36 @@
     <div id="peopleList"></div>
   </div>
 
-  <!-- CLICK SOUND -->
-  <audio id="clickSound" src="click.mp3" preload="auto" aria-hidden="true"></audio>
-
   <!-- EDIT MODAL -->
-  <div id="editModal" class="edit-modal hidden" aria-hidden="true">
+  <div id="editModal" class="edit-modal hidden">
     <div class="edit-box">
       <h3>Edit Person</h3>
 
-      <label>Name</label>
-      <input id="editNameInput" type="text" />
+      <input id="editName" placeholder="Name" />
 
-      <label>Status</label>
-      <select id="editStatusSelect">
+      <select id="editStatus">
         <option value="crush">💘 Crush</option>
         <option value="dating">💞 Dating</option>
         <option value="pause">⏸ Pause</option>
       </select>
 
-      <label>Focus <span class="muted">(manual override)</span></label>
+      <div class="label">Focus (manual override)</div>
       <input type="range" id="editFocus" min="0" max="100" />
-      <div id="editFocusValue" class="focus-readout">0%</div>
+      <div id="editFocusValue">0%</div>
 
-      <label>Notes (write freely — long text allowed)</label>
-      <textarea
-        id="editNotes"
-        placeholder="Write how you feel. The system will interpret this, update focus, generate next moves, archive it, then clear."
-        rows="5"
-      ></textarea>
+      <div class="label">Notes (write freely — long text allowed)</div>
+      <textarea id="editNotes" placeholder="Write how you feel. This will be interpreted, archived, then cleared."></textarea>
 
-      <label class="checkbox-wrap">
-        <input id="applySmartNotes" type="checkbox" checked />
+      <label class="auto-row">
+        <input type="checkbox" id="autoNotes" checked />
         Auto-apply Notes Intelligence
       </label>
 
-      <!-- NOTES HISTORY (COLLAPSED) -->
-      <div class="history-toggle">
-        <button type="button" id="toggleHistoryBtn">View Notes History</button>
-      </div>
-
-      <div id="notesHistory" class="notes-history hidden">
-        <div id="notesHistoryList">No history yet.</div>
-      </div>
+      <button type="button" id="viewHistory">View Notes History</button>
 
       <div class="edit-actions">
-        <button type="button" class="cancel" id="cancelEditBtn">Cancel</button>
-        <button type="button" id="saveEditBtn">Save</button>
+        <button type="button" id="cancelEdit">Cancel</button>
+        <button type="button" id="saveEdit">Save</button>
       </div>
     </div>
   </div>
