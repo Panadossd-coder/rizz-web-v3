@@ -1,1 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Rizz Web — Version 2.4 (Smart Notes v4)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <h1>Rizz Web</h1>
+    <div class="sub">Version 2.4 — Edit Intelligence</div>
 
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="card dashboard">
+      <h3>💘 Today's Dashboard</h3>
+      <div class="dash-item">🎯 Focus: <span id="dashFocus">—</span></div>
+      <div class="dash-item">⏸ Pause: <span id="dashPause">—</span></div>
+      <div class="dash-item">🧠 Action: <span id="dashAction">Add someone to begin.</span></div>
+    </div>
+
+    <div class="card status">✅ Version 2 running</div>
+
+    <!-- FORM -->
+    <form id="addForm" class="card">
+      <input name="name" placeholder="Name" required />
+
+      <div class="label">Status</div>
+      <div class="status-buttons">
+        <button type="button" data-status="crush">💘 Crush</button>
+        <button type="button" data-status="dating">💞 Dating</button>
+        <button type="button" data-status="pause">⏸ Pause</button>
+      </div>
+
+      <input type="hidden" name="status" value="crush" />
+
+      <div class="label">Set Focus</div>
+      <div class="focus-control">
+        <button type="button" id="minus">−</button>
+        <span id="focusValue">0%</span>
+        <button type="button" id="plus">+</button>
+      </div>
+
+      <input type="hidden" name="focus" value="0" />
+
+      <textarea name="notes" placeholder="Notes"></textarea>
+      <input name="reminder" placeholder="Reminder (optional text; used to mark a reminder)" />
+
+      <button type="submit">Add</button>
+    </form>
+
+    <div id="peopleList"></div>
+  </div>
+
+  <!-- click sound (optional) -->
+  <audio id="clickSound" src="click.mp3" preload="auto" aria-hidden="true"></audio>
+
+  <!-- EDIT MODAL (UPGRADED) -->
+  <div id="editModal" class="edit-modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="edit-box">
+      <h3>Edit</h3>
+
+      <input id="editNameInput" type="text" placeholder="Name" />
+
+      <select id="editStatusSelect" aria-label="Status">
+        <option value="crush">💘 Crush</option>
+        <option value="dating">💞 Dating</option>
+        <option value="pause">⏸ Pause</option>
+      </select>
+
+      <input type="range" id="editFocus" min="0" max="100" />
+      <div id="editFocusValue" style="text-align:center;margin-top:8px;color:#ff99c8;font-weight:700;">0%</div>
+
+      <div class="label" style="margin-top:12px;">Notes (Edit-time)</div>
+      <textarea id="editNotes" placeholder="Write event notes here (e.g., 'long audio call last night, she initiated twice')"></textarea>
+
+      <div class="smart-row">
+        <label class="checkbox-wrap">
+          <input id="applySmartNotes" type="checkbox" checked />
+          Auto-apply Smart Notes
+        </label>
+        <div id="smartSuggestion" class="smart-suggestion">Suggested: —</div>
+      </div>
+
+      <div id="profileSummary" class="profile-summary">
+        <strong>Profile Summary</strong>
+        <div id="summaryFacts" class="summary-facts">—</div>
+        <div id="summaryState" class="summary-state"></div>
+      </div>
+
+      <div id="eventTimeline" class="event-timeline">
+        <strong>Recent Events</strong>
+        <div id="timelineList" class="timeline-list">No events yet.</div>
+      </div>
+
+      <div id="adviceBox" class="advice-box">
+        <div class="advice-controls">
+          <label for="toneSelect">Tone</label>
+          <select id="toneSelect">
+            <option value="supportive">Supportive</option>
+            <option value="strategic">Strategic</option>
+            <option value="playful">Playful</option>
+            <option value="strong">Strong</option>
+          </select>
+        </div>
+
+        <div id="adviceList" class="advice-list">
+          <!-- advice cards injected here -->
+        </div>
+      </div>
+
+      <div class="edit-actions">
+        <button type="button" class="cancel" onclick="closeEdit()">Cancel</button>
+        <button type="button" id="saveEditBtn" onclick="saveEdit()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
