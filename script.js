@@ -1,6 +1,5 @@
 /* =========================
-   Rizz Web — Version 2.4
-   Intelligent Notes Core
+   Rizz Web — Version 2.4 (Fixes + Auto Activity + Varied NextMove)
    ========================= */
 
 /* ---------- CLICK SOUND ---------- */
@@ -8,11 +7,7 @@ const clickSound = document.getElementById("clickSound");
 document.addEventListener("click", e => {
   const btn = e.target.closest("button");
   if (!btn || !clickSound) return;
-  try {
-    clickSound.currentTime = 0;
-    clickSound.volume = 0.3;
-    clickSound.play().catch(()=>{});
-  } catch(e){}
+  try { clickSound.currentTime = 0; clickSound.volume = 0.3; clickSound.play().catch(()=>{}); } catch(e){}
 });
 
 /* ---------- CORE ELEMENTS ---------- */
@@ -28,12 +23,30 @@ const focusValueEl = document.getElementById("focusValue");
 const statusInput = form.querySelector('[name="status"]');
 const focusInput = form.querySelector('[name="focus"]');
 
+/* Edit modal elements */
+const editModal = document.getElementById("editModal");
+const editNameInput = document.getElementById("editNameInput");
+const editStatusSelect = document.getElementById("editStatusSelect");
+const editFocus = document.getElementById("editFocus");
+const editFocusValue = document.getElementById("editFocusValue");
+const editNotes = document.getElementById("editNotes");
+const applySmartNotes = document.getElementById("applySmartNotes");
+const smartSuggestion = document.getElementById("smartSuggestion");
+const detailsList = document.getElementById("detailsList");
+const adviceList = document.getElementById("adviceList");
+const activityToolbar = document.querySelector(".activity-toolbar");
+const toneSelect = document.getElementById("toneSelect");
+const activitySelect = document.getElementById("activitySelect");
+const viewAllNotesBtn = document.getElementById("viewAllNotesBtn");
+const saveEditBtn = document.getElementById("saveEditBtn");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+
 /* ---------- STATE ---------- */
 let focus = 0;
 let people = JSON.parse(localStorage.getItem("rizz_people")) || [];
 let editingIndex = null;
 
-/* ---------- STATUS BUTTONS ---------- */
+/* ---------- UI Setup ---------- */
 document.querySelectorAll(".status-buttons button").forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll(".status-buttons button").forEach(b => b.classList.remove("active"));
@@ -44,81 +57,193 @@ document.querySelectorAll(".status-buttons button").forEach(btn => {
 const defaultBtn = document.querySelector('[data-status="crush"]');
 if (defaultBtn) defaultBtn.classList.add("active");
 
-/* ---------- FOCUS CONTROL ---------- */
-document.getElementById("plus").onclick = () => {
-  focus = Math.min(100, focus + 10);
-  updateFocusUI();
-};
-document.getElementById("minus").onclick = () => {
-  focus = Math.max(0, focus - 10);
-  updateFocusUI();
-};
-function updateFocusUI(){
-  focusValueEl.textContent = focus + "%";
-  focusInput.value = focus;
-}
+document.getElementById("plus").onclick = () => { focus = Math.min(100, focus + 10); updateFocusUI(); };
+document.getElementById("minus").onclick = () => { focus = Math.max(0, focus - 10); updateFocusUI(); };
+function updateFocusUI(){ focusValueEl.textContent = focus + "%"; if (focusInput) focusInput.value = focus; }
+
+/* hide UI controls that must be auto-driven */
+if(activityToolbar) activityToolbar.style.display = "none";
+if(toneSelect) toneSelect.style.display = "none";
 
 /* =========================
-   INTELLIGENT NOTES ENGINE
+   Activity weights (max 20)
    ========================= */
+const activityWeights = {
+  casual_meet: 6,
+  proper_date: 12,
+  long_date: 15,
+  kiss: 16,
+  close_consistent: 18,
+  major_confirmation: 20
+};
 
-/* --- signal dictionaries --- */
-const POSITIVE = ["care","enjoy","calm","happy","good","love","like","miss"];
-const NEGATIVE = ["ignore","ignored","no reply","late reply","cold","confused","anxious","tired","hurt"];
-const IMBALANCE = ["i love","i care","i miss","i want her","i want him"];
+/* small helpers */
+function saveStorage(){ localStorage.setItem("rizz_people", JSON.stringify(people)); }
+function nowISO(){ return new Date().toISOString(); }
+function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-/* --- analyze long emotional text --- */
-function analyzeNotes(text){
-  const t = text.toLowerCase();
-  let score = 0;
-  let risk = false;
+/* =========================
+   Notes analysis (long-text aware)
+   - returns noteDelta, riskFlag, keySignals, inferredActivities
+   ========================= */
+function analyzeNotesAdvanced(text){
+  const t = (text||"").toLowerCase();
+  const out = { delta: 0, risk: false, signals: [], inferredActivities: [] };
 
-  POSITIVE.forEach(w => { if (t.includes(w)) score += 3; });
-  NEGATIVE.forEach(w => { if (t.includes(w)) score -= 4; });
-  IMBALANCE.forEach(w => { if (t.includes(w)) risk = true; });
+  // sentiment-ish signals (weighted)
+  const posSeeds = { "love":4, "like":3, "enjoy":2, "calm":2, "warm":2, "good":2, "affection":3 };
+  const negSeeds = { "ignore":-5, "ignored":-5, "no reply":-4, "left on read":-4, "cold":-3, "anxious":-3, "hurt":-4, "jealous":-3 };
 
-  if (t.length > 120) score *= 0.7; // long text = reflection, not hype
+  Object.keys(posSeeds).forEach(k => { if(t.includes(k)){ out.delta += posSeeds[k]; out.signals.push(k); } });
+  Object.keys(negSeeds).forEach(k => { if(t.includes(k)){ out.delta += negSeeds[k]; out.signals.push(k); out.risk = out.risk || (negSeeds[k] < -3); } });
 
-  score = Math.max(-10, Math.min(10, Math.round(score)));
+  // imbalance detection
+  if(/\bi love\b|\bi miss\b|\bi need\b|\bi want\b/.test(t)) { out.signals.push("declaration"); out.risk = out.risk || true; }
 
-  return {
-    delta: score,
-    risk,
-    summary:
-      score < 0 ? "Emotional imbalance detected"
-      : score > 0 ? "Healthy emotional signal"
-      : "Neutral emotional state"
+  // long text scaling: long reflective notes are treated as more reliable signals but scaled for safety
+  if(t.length > 200) { out.delta = Math.round(out.delta * 0.9); }
+  if(t.length > 500) { out.delta = Math.round(out.delta * 0.95); }
+
+  // inferred activity detection (search for common phrases)
+  const actMap = {
+    major_confirmation: ["met parents","met your parents","introduced to family","met his parents"],
+    long_date: ["long date","quality date","proper date","long time together","romantic dinner"],
+    proper_date: ["date","we went on a date","went on a date"],
+    casual_meet: ["met up","hung out","chilled together","hang out","met for coffee","coffee"],
+    kiss: ["kissed","we kissed","gave a kiss","kiss"],
+    close_consistent: ["stayed over","spent night","we traveled together","trip together","travelled together"]
   };
+  Object.keys(actMap).forEach(k=>{
+    actMap[k].forEach(phrase=>{
+      if(t.includes(phrase) && !out.inferredActivities.some(x=>x.kind===k)){
+        out.inferredActivities.push({ kind: k, phrase });
+      }
+    });
+  });
+
+  // cap safe delta
+  out.delta = clamp(out.delta, -40, 40);
+
+  return out;
 }
 
 /* =========================
-   NEXT MOVE (LONG, CORRECTIVE)
+   Infer activities and compute inferred delta (reduced rate)
+   - inferred weight = 60% of nominal, but still capped at 20%
+   - returns totalInferredDelta and details list
    ========================= */
-
-function generateNextMove(p, analysis){
-  if (analysis.risk && analysis.delta <= 0){
-    return `You are emotionally ahead right now. This is not a failure — it’s a signal to slow down.
-Reduce initiation, stop explaining your feelings, and let her actions speak.
-If she reaches out, respond calmly. If she doesn’t, that clarity protects you.`;
-  }
-
-  if (analysis.delta > 0){
-    return `The emotional tone here is positive and stable.
-Stay consistent without increasing pressure.
-Match her energy, keep your routine, and allow things to grow naturally without forcing progress.`;
-  }
-
-  return `Nothing significant has shifted emotionally.
-Maintain balance. Do not chase or withdraw dramatically.
-Let time and consistent behavior reveal the direction.`;
+function inferActivitiesDelta(inferredActivities){
+  let total = 0;
+  const details = [];
+  inferredActivities.forEach(a=>{
+    const base = activityWeights[a.kind] || 0;
+    const inferred = Math.round(base * 0.6); // 60% strength for inferred
+    const applied = clamp(inferred, 0, 20);
+    total += applied;
+    details.push({ kind: a.kind, phrase: a.phrase, base, applied });
+  });
+  // cap total single automatic activity apply to 20 per rules (don't let inferred sum exceed 20)
+  total = Math.min(total, 20);
+  return { total, details };
 }
 
 /* =========================
-   DASHBOARD LOGIC
+   Next Move generator (varied, long, contextual)
+   - uses template parts and history to avoid repetition
    ========================= */
 
+const templateSeed = {
+  correctiveStart: [
+    "You're emotionally ahead right now — this often leads to anxiety and chasing.",
+    "This is a common warning sign: you're investing more emotionally than she is.",
+    "Right now your actions may be creating imbalance; it's time for a reset."
+  ],
+  correctiveSteps: [
+    "Reduce initiation for 3–7 days; respond kindly but don't lead conversations.",
+    "Focus on your routine; prioritize your life, hobbies, and friends to reset energy.",
+    "Avoid sending long messages explaining feelings; preserve dignity and clarity."
+  ],
+  correctiveFinish: [
+    "Let her show effort; if nothing changes, you'll gain clarity instead of anxiety.",
+    "If she reaches out, respond warmly; otherwise, consider pausing heavy investment.",
+    "Remember: protection of your emotional energy is progress, not defeat."
+  ],
+  positiveStart: [
+    "This looks like healthy momentum — keep a steady approach.",
+    "Positive signs here: mutual warmth is visible in the notes.",
+    "You're building good momentum; subtlety will preserve attraction."
+  ],
+  positiveSteps: [
+    "Keep consistency without over-texting; short, quality interactions are best.",
+    "Suggest small shared activities that fit both schedules, no pressure.",
+    "Reinforce emotional security with small gestures, not grand reveals."
+  ],
+  positiveFinish: [
+    "Let things grow naturally; don't create false urgency.",
+    "A steady approach builds real trust over time.",
+    "Small, regular steps beat one big push."
+  ],
+  neutralPhrases: [
+    "No major change detected.",
+    "Maintain calm and observe patterns over the coming days.",
+    "Balance your attention; be neither desperate nor absent."
+  ]
+};
+
+function hashText(s){
+  // simple hash to identify last next move
+  let h = 0;
+  for(let i=0;i<s.length;i++){ h = (h<<5) - h + s.charCodeAt(i); h |= 0; }
+  return h;
+}
+
+function generateLongNextMove(p, analysis, inferredDetails){
+  let parts = [];
+  if(analysis.risk || analysis.delta < 0){
+    parts.push(pick(templateSeed.correctiveStart));
+    // 2 steps (choose two distinct)
+    const steps = [...templateSeed.correctiveSteps];
+    parts.push(pick(steps)); // random
+    // avoid repetition by picking another step different
+    let other = pick(steps);
+    if(other === parts[1]) other = pick(steps);
+    parts.push(other);
+    parts.push(pick(templateSeed.correctiveFinish));
+  } else if(analysis.delta > 0){
+    parts.push(pick(templateSeed.positiveStart));
+    parts.push(pick(templateSeed.positiveSteps));
+    parts.push(pick(templateSeed.positiveFinish));
+  } else {
+    parts.push(pick(templateSeed.neutralPhrases));
+    parts.push("Keep your routine and watch for consistent effort.");
+  }
+
+  // if inferred activities exist, include them as context-sensitive follow-ups
+  if(inferredDetails && inferredDetails.length){
+    const a = inferredDetails[0];
+    parts.push(`Detected recent activity: "${a.phrase}". That suggests meaningful contact — follow up gently within the next 24–48 hours but don't over-index emotionally.`);
+  }
+
+  // assemble
+  let nextMove = parts.join(" ");
+  // avoid repeating exactly the previous advice
+  const lastHash = p.lastNextMoveHash || 0;
+  const newHash = hashText(nextMove);
+  if(newHash === lastHash){
+    // try small variation: shuffle order or add small phrase
+    nextMove += " Try a calm and clear message if needed.";
+  }
+  // save hash for future dedup checks
+  p.lastNextMoveHash = newHash;
+  return nextMove;
+}
+
+/* =========================
+   Dashboard logic
+   ========================= */
 function updateDashboard(){
-  if (!people.length){
+  if(!people.length){
     dashFocus.textContent = "—";
     dashPause.textContent = "—";
     dashWarning.textContent = "—";
@@ -129,45 +254,36 @@ function updateDashboard(){
   const paused = people.filter(p => p.focus <= 20);
   const risky = people.filter(p => p.lastRisk);
 
-  const focusCandidates = people
-    .filter(p => p.focus >= 60 && !p.lastRisk)
-    .sort((a,b)=>b.focus-a.focus)
-    .slice(0,2);
+  // priority score: focus * healthFactor (healthFactor less if risk)
+  const scored = people.map(p => {
+    const healthFactor = p.lastRisk ? 0.6 : 1.0;
+    return { name: p.name, score: p.focus * healthFactor, p };
+  }).sort((a,b)=>b.score - a.score);
 
-  dashFocus.textContent = focusCandidates.length
-    ? focusCandidates.map(p=>p.name).join(", ")
-    : "—";
+  const top = scored.slice(0,2).map(s=>s.p);
 
-  dashPause.textContent = paused.length
-    ? paused.map(p=>p.name).join(", ")
-    : "—";
-
-  dashWarning.textContent = risky.length
-    ? risky.map(p=>p.name).join(", ")
-    : "—";
-
-  dashAction.textContent = focusCandidates.length
-    ? focusCandidates[0].nextMove
-    : "Stay balanced.";
+  dashFocus.textContent = top.length ? top.map(p=>p.name).join(", ") : "—";
+  dashPause.textContent = paused.length ? paused.map(p=>p.name).join(", ") : "—";
+  dashWarning.textContent = risky.length ? risky.map(p=>p.name).join(", ") : "—";
+  dashAction.textContent = top.length ? top[0].nextMove : "Stay balanced.";
 }
 
 /* =========================
-   RENDER PEOPLE
+   Render people list
    ========================= */
-
 function render(){
   list.innerHTML = "";
-
   people.forEach((p,i)=>{
     const card = document.createElement("div");
-    card.className = `person ${p.focus<=20?"paused":p.focus>=60&&!p.lastRisk?"glow":""}`;
-
+    card.className = `person ${(p.focus<=20) ? "paused" : (p.focus>=60 && !p.lastRisk) ? "glow" : ""}`;
+    const reminderHtml = p.reminder ? `<div class="reminder">⏰ ${escapeHtml(p.reminder)}</div>` : "";
     card.innerHTML = `
-      <strong>${p.name}</strong>
-      <span class="sub">${p.status}</span>
+      <strong>${escapeHtml(p.name)}</strong>
+      <span class="sub">${escapeHtml(p.status)}</span>
       <div class="focus-bar"><div class="focus-fill" style="width:${p.focus}%"></div></div>
       <div class="sub">${p.focus}% focus</div>
-      <div class="advice"><strong>Next Move:</strong> ${p.nextMove}</div>
+      ${reminderHtml}
+      <div class="advice"><strong>Next Move:</strong> ${escapeHtml(truncate(p.nextMove || "Stay balanced.", 220))}</div>
       <div class="card-actions">
         <button onclick="openEdit(${i})">Edit</button>
         <button onclick="removePerson(${i})">Remove</button>
@@ -175,69 +291,60 @@ function render(){
     `;
     list.appendChild(card);
   });
-
   updateDashboard();
 }
 
-/* =========================
-   ADD PERSON
-   ========================= */
+/* small helpers for text */
+function escapeHtml(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function truncate(s,n){ if(!s) return ""; return s.length>n? s.slice(0,n-1)+"…": s; }
 
+/* =========================
+   Add person
+   ========================= */
 form.onsubmit = e => {
   e.preventDefault();
-  const name = form.name.value.trim();
-  if (!name) return;
-
-  people.push({
+  const name = (form.name && form.name.value || "").trim();
+  if(!name) return;
+  const p = {
     name,
-    status: statusInput.value,
+    status: statusInput.value || "crush",
     focus,
     events: [],
     nextMove: "Observe and stay balanced.",
-    lastRisk: false
-  });
-
-  save();
-  render();
-  form.reset();
-  focus = 0;
-  updateFocusUI();
+    lastRisk: false,
+    lastNextMoveHash: 0
+  };
+  people.push(p);
+  saveStorage(); render();
+  form.reset(); focus = 0; updateFocusUI();
+  document.querySelectorAll(".status-buttons button").forEach(b=>b.classList.remove("active"));
+  if(defaultBtn) defaultBtn.classList.add("active");
 };
 
 /* =========================
-   EDIT MODAL
+   Edit modal logic
    ========================= */
-
-const editModal = document.getElementById("editModal");
-const editNameInput = document.getElementById("editNameInput");
-const editStatusSelect = document.getElementById("editStatusSelect");
-const editFocus = document.getElementById("editFocus");
-const editFocusValue = document.getElementById("editFocusValue");
-const editNotes = document.getElementById("editNotes");
-const applySmartNotes = document.getElementById("applySmartNotes");
-const smartSuggestion = document.getElementById("smartSuggestion");
-const detailsList = document.getElementById("detailsList");
-
-document.getElementById("cancelEditBtn").onclick = closeEdit;
-document.getElementById("saveEditBtn").onclick = saveEdit;
-
-editFocus.oninput = ()=> editFocusValue.textContent = editFocus.value + "%";
+cancelEditBtn.onclick = closeEdit;
+saveEditBtn.onclick = saveEdit;
+if(viewAllNotesBtn) viewAllNotesBtn.onclick = () => {
+  if(editingIndex === null) return;
+  const p = people[editingIndex];
+  const txt = (p.events && p.events.length) ? p.events.map(e=>`${formatTime(e.time)} • [${e.type}] ${e.text} (Δ ${e.delta})`).join("\n\n") : "No saved notes.";
+  alert("Notes history:\n\n" + txt);
+};
 
 function openEdit(i){
   editingIndex = i;
   const p = people[i];
-
-  editNameInput.value = p.name;
-  editStatusSelect.value = p.status;
-  editFocus.value = p.focus;
-  editFocusValue.textContent = p.focus + "%";
+  editNameInput.value = p.name || "";
+  editStatusSelect.value = p.status || "crush";
+  editFocus.value = p.focus || 0;
+  editFocusValue.textContent = (p.focus||0) + "%";
   editNotes.value = "";
   smartSuggestion.textContent = "Suggested: —";
-
-  detailsList.innerHTML = p.events.length
-    ? p.events.slice(-5).map(e=>`• ${e.text}`).join("<br>")
-    : "No saved notes yet.";
-
+  detailsList.innerHTML = (p.events && p.events.length) ? p.events.slice(-6).map(e=>`• ${escapeHtml(e.text)} • ${formatTime(e.time)} • Δ ${e.delta}`).join("<br>") : "No saved notes yet.";
+  // advice auto-generate for view
+  populateAdvicePreview(p);
   editModal.classList.remove("hidden");
 }
 
@@ -247,101 +354,103 @@ function closeEdit(){
 }
 
 /* =========================
-   SAVE EDIT (NOTES CORE)
+   Save Edit: notes + inferred activities auto-handling
    ========================= */
-
 function saveEdit(){
-  if (editingIndex === null) return;
+  if(editingIndex === null) return;
   const p = people[editingIndex];
+  try {
+    // basic fields
+    p.name = (editNameInput.value || "").trim() || p.name;
+    p.status = editStatusSelect.value || p.status;
+    p.focus = clamp(parseInt(editFocus.value,10) || p.focus, 0, 100);
 
-  p.name = editNameInput.value.trim() || p.name;
-  p.status = editStatusSelect.value;
-  p.focus = parseInt(editFocus.value,10) || p.focus;
+    const notesText = (editNotes.value || "").trim();
+    if(notesText){
+      // analyze notes deeply
+      const analysis = analyzeNotesAdvanced(notesText);
+      // inferred activities delta
+      const inferred = inferActivitiesDelta(analysis.inferredActivities);
+      // total note delta (notes influence) — keep notes small effect: noteDelta scaled down
+      const noteDelta = Math.round(analysis.delta * 0.9); // gentle scaling
+      // inferred activities add as automatic but limited
+      let totalAutoDelta = 0;
+      if(inferred.total > 0){
+        totalAutoDelta += inferred.total;
+      }
+      // apply note delta but small cap: notes alone should rarely exceed +10 per your rule
+      const noteCap = 10;
+      const appliedNoteDelta = clamp(noteDelta, -noteCap, noteCap);
 
-  const text = editNotes.value.trim();
-  if (text && applySmartNotes.checked){
-    const analysis = analyzeNotes(text);
-    smartSuggestion.textContent = "Suggested: " + analysis.delta;
+      // combined auto delta before safety clamps
+      let combinedDelta = appliedNoteDelta + totalAutoDelta;
 
-    let delta = analysis.delta;
-    if (p.focus + delta > 95) delta = Math.max(0, 95 - p.focus);
+      // safety: no single automatic change > 40
+      combinedDelta = clamp(combinedDelta, -40, 40);
 
-    p.focus = Math.max(0, Math.min(100, p.focus + delta));
-    p.lastRisk = analysis.risk;
-    p.nextMove = generateNextMove(p, analysis);
+      // hard-to-100% rule: if p.focus + combinedDelta > 95, cap it to 95 (notes can't push to 100)
+      if(p.focus + combinedDelta > 95){
+        combinedDelta = Math.max(0, 95 - p.focus);
+      }
 
-    p.events.push({
-      type: "note",
-      text,
-      delta,
-      time: new Date().toISOString()
-    });
+      // apply
+      p.focus = clamp(p.focus + combinedDelta, 0, 100);
 
-    editNotes.value = ""; // clear after save
+      // mark risk flag
+      p.lastRisk = !!analysis.risk;
+
+      // build nextMove using inference & analysis
+      p.nextMove = generateLongNextMove(p, analysis, inferred.details);
+
+      // record event (note)
+      p.events = p.events || [];
+      p.events.push({
+        type: inferred.details && inferred.details.length ? "note+activity_inferred" : "note",
+        text: notesText,
+        delta: combinedDelta,
+        inferredActivities: inferred.details || [],
+        time: nowISO()
+      });
+
+      // clear input
+      editNotes.value = "";
+    }
+    // finally persist & render
+    saveStorage();
+    render();
+  } catch(err){
+    console.error("saveEdit error", err);
+  } finally {
+    closeEdit();
   }
-
-  save();
-  render();
-  closeEdit();
 }
 
 /* =========================
-   ACTIVITY HANDLER
+   populateAdvicePreview (auto advice display)
    ========================= */
+function populateAdvicePreview(p){
+  adviceList.innerHTML = "";
+  // create 2–3 varied suggestions using generateLongNextMove with slight variations
+  const a1 = generateLongNextMove(p, { delta: 0, risk: p.lastRisk, signals: [] }, []);
+  const a2 = generateLongNextMove(p, { delta: -1, risk: p.lastRisk, signals: [] }, []);
+  const a3 = generateLongNextMove(p, { delta: 1, risk: p.lastRisk, signals: [] }, []);
 
-const activityWeights = {
-  casual_meet: 6,
-  proper_date: 12,
-  long_date: 15,
-  kiss: 16,
-  close_consistent: 18,
-  major_confirmation: 20
-};
-
-document.getElementById("markActivityBtn").onclick = ()=>{
-  if (editingIndex === null) return;
-  const sel = document.getElementById("activitySelect");
-  if (!sel.value) return;
-
-  if (!confirm("Apply this activity?")) return;
-
-  const p = people[editingIndex];
-  const delta = activityWeights[sel.value] || 0;
-
-  p.focus = Math.min(100, p.focus + delta);
-  p.events.push({
-    type: "activity",
-    text: sel.options[sel.selectedIndex].text,
-    delta,
-    time: new Date().toISOString()
+  [a1,a2,a3].forEach((t, idx)=>{
+    const card = document.createElement("div");
+    card.className = "advice-card";
+    card.innerHTML = `<div style="display:flex;gap:8px;align-items:center;"><div style="font-weight:800;color:#ff9fcf">${idx===0?"Primary":"Alt "+idx}</div><div style="margin-left:auto;color:#9aa3ad">Confidence ${Math.max(50,80 - idx*8)}%</div></div><div style="margin-top:8px">${escapeHtml(t)}</div>`;
+    adviceList.appendChild(card);
   });
-
-  p.nextMove = `This activity increased momentum.
-Allow things to settle. Follow up naturally within the next 24–48 hours without over-investing.`;
-
-  sel.value = "";
-  save();
-  render();
-  closeEdit();
-};
-
-/* =========================
-   REMOVE / SAVE
-   ========================= */
-
-function removePerson(i){
-  people.splice(i,1);
-  save();
-  render();
-}
-
-function save(){
-  localStorage.setItem("rizz_people", JSON.stringify(people));
 }
 
 /* =========================
-   INIT
+   Utility functions
    ========================= */
+function formatTime(iso){ if(!iso) return ""; const d = new Date(iso); return d.toLocaleString(); }
+function removePerson(i){ people.splice(i,1); saveStorage(); render(); }
 
+/* =========================
+   Init
+   ========================= */
 updateFocusUI();
 render();
