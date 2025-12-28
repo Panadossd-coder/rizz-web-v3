@@ -2,31 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Rizz Web — Version 2 (Upgrade)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rizz Web — Version 2.4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
+
     <h1>Rizz Web</h1>
-    <div class="sub">Version 2 — Smart Focus (Upgraded)</div>
+    <div class="sub">Version 2.4 — Notes Authority</div>
 
     <!-- DASHBOARD -->
     <div id="dashboard" class="card dashboard">
-      <h3>💘 Today's Dashboard</h3>
+      <h3>💘 Today’s Dashboard</h3>
       <div class="dash-item">🎯 Focus: <span id="dashFocus">—</span></div>
       <div class="dash-item">⏸ Pause: <span id="dashPause">—</span></div>
       <div class="dash-item">🧠 Action: <span id="dashAction">Add someone to begin.</span></div>
     </div>
 
-    <div class="card status">✅ Version 2 running</div>
+    <div class="card status">✅ Version 2.4 running (Notes Authority)</div>
 
-    <!-- FORM -->
-    <form id="addForm" class="card" autocomplete="off">
-      <input id="name" name="name" placeholder="Name" required />
+    <!-- ADD FORM -->
+    <form id="addForm" class="card">
+      <input name="name" placeholder="Name" required />
 
       <div class="label">Status</div>
-      <div class="status-buttons" role="toolbar" aria-label="Status">
+      <div class="status-buttons">
         <button type="button" data-status="crush">💘 Crush</button>
         <button type="button" data-status="dating">💞 Dating</button>
         <button type="button" data-status="pause">⏸ Pause</button>
@@ -44,53 +45,46 @@
       <input type="hidden" name="focus" value="0" />
 
       <textarea name="quickNote" placeholder="Optional quick note (can expand later in Edit)"></textarea>
+
       <input name="reminder" placeholder="Reminder (optional)" />
 
       <button type="submit">Add</button>
     </form>
 
+    <!-- PEOPLE LIST -->
     <div id="peopleList"></div>
   </div>
 
-  <!-- click sound (optional) -->
-  <audio id="clickSound" src="click.mp3" preload="auto" aria-hidden="true"></audio>
-
-  <!-- EDIT MODAL
-       IDs must match script.js:
-       editModal, editName, editStatus, editFocus, editFocusValue,
-       editNotes, autoNotes, viewHistory, cancelEdit, saveEdit
-  -->
-  <div id="editModal" class="edit-modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="edit-box" role="document">
+  <!-- EDIT MODAL -->
+  <div id="editModal" class="edit-modal hidden">
+    <div class="edit-box">
       <h3>Edit Person</h3>
 
-      <label for="editName">Name</label>
-      <input id="editName" type="text" placeholder="Name" />
+      <input id="editName" placeholder="Name" />
 
-      <label for="editStatus">Status</label>
-      <select id="editStatus" aria-label="Status">
+      <select id="editStatus">
         <option value="crush">💘 Crush</option>
         <option value="dating">💞 Dating</option>
         <option value="pause">⏸ Pause</option>
       </select>
 
-      <label for="editFocus">Focus (manual override)</label>
-      <input id="editFocus" type="range" min="0" max="100" />
-      <div id="editFocusValue" style="text-align:center;margin-top:8px;color:#ff99c8;font-weight:700;">0%</div>
+      <div class="label">Focus (manual override)</div>
+      <input type="range" id="editFocus" min="0" max="100" />
+      <div id="editFocusValue">0%</div>
 
-      <label for="editNotes">Notes (write freely — long text allowed)</label>
-      <textarea id="editNotes" placeholder="Write how you feel. The system will interpret this, update focus, generate next moves, archive it, then clear."></textarea>
+      <div class="label">Notes (write freely — long text allowed)</div>
+      <textarea id="editNotes" placeholder="Write how you feel. This will be interpreted, archived, then cleared."></textarea>
 
-      <div class="auto-row">
-        <input id="autoNotes" type="checkbox" checked />
-        <div class="auto-text">Auto-apply Notes Intelligence</div>
-      </div>
+      <label class="auto-row">
+        <input type="checkbox" id="autoNotes" checked />
+        Auto-apply Notes Intelligence
+      </label>
 
-      <button id="viewHistory" type="button">View Notes History</button>
+      <button type="button" id="viewHistory">View Notes History</button>
 
-      <div style="display:flex; gap:10px; margin-top:12px;">
-        <button id="cancelEdit" type="button" class="cancel">Cancel</button>
-        <button id="saveEdit" type="button" class="save">Save</button>
+      <div class="edit-actions">
+        <button type="button" id="cancelEdit">Cancel</button>
+        <button type="button" id="saveEdit">Save</button>
       </div>
     </div>
   </div>
