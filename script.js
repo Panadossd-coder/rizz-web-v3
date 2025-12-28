@@ -552,3 +552,75 @@ window.rizz = {
   saveStorage,
   render
 };
+/* ===============================
+   🔧 BUTTON FIX — V2.4 HOT PATCH
+   Centralized event delegation
+   Safari-safe
+   =============================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ---------- STATUS BUTTONS ---------- */
+  document.body.addEventListener("click", (e) => {
+    const statusBtn = e.target.closest(".status-buttons button");
+    if (!statusBtn) return;
+
+    const status = statusBtn.dataset.status;
+    if (!status) return;
+
+    // visual active state
+    document.querySelectorAll(".status-buttons button")
+      .forEach(b => b.classList.remove("active"));
+
+    statusBtn.classList.add("active");
+
+    // hidden input sync
+    const statusInput = document.querySelector('[name="status"]');
+    if (statusInput) statusInput.value = status;
+  });
+
+  /* ---------- FOCUS + / - BUTTONS ---------- */
+  document.body.addEventListener("click", (e) => {
+    const plus = e.target.closest("#plus");
+    const minus = e.target.closest("#minus");
+
+    if (!plus && !minus) return;
+
+    const focusValueEl = document.getElementById("focusValue");
+    const focusInput = document.querySelector('[name="focus"]');
+
+    let current = parseInt(focusInput?.value || "0", 10);
+
+    if (plus) current = Math.min(100, current + 10);
+    if (minus) current = Math.max(0, current - 10);
+
+    if (focusInput) focusInput.value = current;
+    if (focusValueEl) focusValueEl.textContent = current + "%";
+  });
+
+  /* ---------- EDIT / REMOVE BUTTONS ---------- */
+  document.body.addEventListener("click", (e) => {
+
+    const editBtn = e.target.closest(".edit-btn");
+    const removeBtn = e.target.closest(".remove-btn");
+
+    const card = e.target.closest(".person");
+    if (!card) return;
+
+    const index = parseInt(card.dataset.index, 10);
+    if (Number.isNaN(index)) return;
+
+    if (editBtn) {
+      if (typeof openEdit === "function") {
+        openEdit(index);
+      }
+    }
+
+    if (removeBtn) {
+      people.splice(index, 1);
+      localStorage.setItem("rizz_people", JSON.stringify(people));
+      render();
+    }
+  });
+
+});
