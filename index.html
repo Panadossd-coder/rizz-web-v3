@@ -2,24 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Rizz Web — Version 2.4 (Smart Notes v4)</title>
+  <title>Rizz Web — Version 2.4 (Notes Intelligence)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
     <h1>Rizz Web</h1>
-    <div class="sub">Version 2.4 — Edit Intelligence</div>
+    <div class="sub">Version 2.4 — Notes Intelligence</div>
 
     <!-- DASHBOARD -->
     <div id="dashboard" class="card dashboard">
       <h3>💘 Today's Dashboard</h3>
       <div class="dash-item">🎯 Focus: <span id="dashFocus">—</span></div>
       <div class="dash-item">⏸ Pause: <span id="dashPause">—</span></div>
+      <div class="dash-item">⚠️ <span id="dashWarning" class="dash-warning">—</span></div>
       <div class="dash-item">🧠 Action: <span id="dashAction">Add someone to begin.</span></div>
     </div>
 
-    <div class="card status">✅ Version 2 running</div>
+    <div class="card status">✅ Version 2.4 running (Notes-focused)</div>
 
     <!-- FORM -->
     <form id="addForm" class="card">
@@ -43,56 +44,76 @@
 
       <input type="hidden" name="focus" value="0" />
 
-      <textarea name="notes" placeholder="Notes"></textarea>
+      <textarea name="notes" placeholder="Quick note (optional) — this will be archived when editing later"></textarea>
       <input name="reminder" placeholder="Reminder (optional text; used to mark a reminder)" />
 
       <button type="submit">Add</button>
     </form>
 
-    <div id="peopleList"></div>
+    <div id="peopleList" class="people-list"></div>
   </div>
 
   <!-- click sound (optional) -->
   <audio id="clickSound" src="click.mp3" preload="auto" aria-hidden="true"></audio>
 
-  <!-- EDIT MODAL (UPGRADED) -->
+  <!-- EDIT MODAL (V2.4 — Notes Intelligence) -->
   <div id="editModal" class="edit-modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="edit-box">
-      <h3>Edit</h3>
+      <h3>Edit Person</h3>
 
+      <label for="editNameInput">Name</label>
       <input id="editNameInput" type="text" placeholder="Name" />
 
+      <label for="editStatusSelect">Status</label>
       <select id="editStatusSelect" aria-label="Status">
         <option value="crush">💘 Crush</option>
         <option value="dating">💞 Dating</option>
         <option value="pause">⏸ Pause</option>
       </select>
 
+      <label for="editFocus">Focus (manual)</label>
       <input type="range" id="editFocus" min="0" max="100" />
       <div id="editFocusValue" style="text-align:center;margin-top:8px;color:#ff99c8;font-weight:700;">0%</div>
 
-      <div class="label" style="margin-top:12px;">Notes (Edit-time)</div>
-      <textarea id="editNotes" placeholder="Write event notes here (e.g., 'long audio call last night, she initiated twice')"></textarea>
+      <label for="editNotes">Notes (write how you feel — long text allowed)</label>
+      <textarea id="editNotes" placeholder="Write how you feel. This will be interpreted, archived, then cleared." rows="5"></textarea>
 
       <div class="smart-row">
         <label class="checkbox-wrap">
           <input id="applySmartNotes" type="checkbox" checked />
-          Auto-apply Smart Notes
+          Auto-apply Notes (default ON)
         </label>
         <div id="smartSuggestion" class="smart-suggestion">Suggested: —</div>
       </div>
 
-      <div id="profileSummary" class="profile-summary">
-        <strong>Profile Summary</strong>
-        <div id="summaryFacts" class="summary-facts">—</div>
-        <div id="summaryState" class="summary-state"></div>
+      <!-- Activity toolbar (explicit activities only) -->
+      <div class="activity-toolbar">
+        <div class="label">Mark Activity (activities can award up to 20% focus)</div>
+        <div class="activity-controls">
+          <select id="activitySelect" aria-label="Activity type">
+            <option value="">— Select activity —</option>
+            <option value="casual_meet">Casual meet (+6)</option>
+            <option value="proper_date">Proper date (+12)</option>
+            <option value="long_date">Long quality date (+15)</option>
+            <option value="kiss">Kiss (+16)</option>
+            <option value="close_consistent">Consistent closeness (+18)</option>
+            <option value="major_confirmation">Major confirmation / met parents (+20)</option>
+          </select>
+          <button type="button" id="markActivityBtn">Mark Activity</button>
+        </div>
+        <div class="activity-note" id="activityNote">Tip: activities must be confirmed before applying.</div>
       </div>
 
-      <div id="eventTimeline" class="event-timeline">
-        <strong>Recent Events</strong>
-        <div id="timelineList" class="timeline-list">No events yet.</div>
+      <!-- Details & History (ONLY visible inside editing modal) -->
+      <div id="detailsPanel" class="details-panel">
+        <div class="details-header">
+          <strong>Notes History</strong>
+          <button type="button" id="viewAllNotesBtn">View All</button>
+        </div>
+        <div id="detailsList" class="details-list">No saved notes yet.</div>
       </div>
 
+      <!-- Advice / Next Move (long, contextual) -->
       <div id="adviceBox" class="advice-box">
         <div class="advice-controls">
           <label for="toneSelect">Tone</label>
@@ -100,22 +121,23 @@
             <option value="supportive">Supportive</option>
             <option value="strategic">Strategic</option>
             <option value="playful">Playful</option>
-            <option value="strong">Strong</option>
+            <option value="firm">Firm</option>
           </select>
         </div>
-
         <div id="adviceList" class="advice-list">
-          <!-- advice cards injected here -->
+          <!-- advice cards injected here by script.js -->
         </div>
       </div>
 
       <div class="edit-actions">
-        <button type="button" class="cancel" onclick="closeEdit()">Cancel</button>
-        <button type="button" id="saveEditBtn" onclick="saveEdit()">Save</button>
+        <button type="button" class="cancel" id="cancelEditBtn">Cancel</button>
+        <button type="button" id="saveEditBtn">Save</button>
       </div>
     </div>
   </div>
 
+  <!-- Basic inline template for person card (script will populate) -->
+  <!-- script.js will be loaded last and will wire all behaviors -->
   <script src="script.js"></script>
 </body>
 </html>
