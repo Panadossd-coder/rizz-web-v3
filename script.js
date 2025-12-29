@@ -557,16 +557,34 @@ if (posCount > 0 && !negatedPositive && !activityBoost) {
     const apply = autoNotes ? !!autoNotes.checked : true;
     if (noteText && apply) {
       const analysis = analyzeNotes(noteText);
+      // ===== REPETITION DAMPENER (EDIT ONLY) =====
+const normalized = noteText.toLowerCase().replace(/\s+/g, " ").trim();
+const recentNotes = (p.notesHistory || [])
+  .slice(-3)
+  .map(n => n.text.toLowerCase().replace(/\s+/g, " ").trim());
+
+const isRepeat = recentNotes.includes(normalized);
+if (isRepeat) {
+  analysis.delta = 0;
+}
+let newFocus = clamp(Math.round(p.focus + analysis.delta), 0, 100);
+
+if (p.trustLock) {
+  newFocus = Math.min(newFocus, 35);
+}
+
+if (newFocus > 95 && analysis.activityBoost < 20) {
+  newFocus = Math.min(newFocus, 95);
+}
+
+p.focus = newFocus;
+// =========================================
 
       // If betrayal in edit, lock
       if (analysis.signals && analysis.signals.includes("betrayal")) {
         p.trustLock = true;
       }
 
-      let newFocus = clamp(Math.round(p.focus + analysis.delta), 0, 100);
-      if (p.trustLock) newFocus = Math.min(newFocus, 35);
-      if (newFocus > 95 && analysis.activityBoost < 20) newFocus = Math.min(newFocus, 95);
-      p.focus = newFocus;
 
       if (analysis.signals && analysis.signals.some(s => ["sex", "overnight", "trip", "kiss", "date", "introduced"].includes(s))) {
         p.activityIcon = "⏰";
