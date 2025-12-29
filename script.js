@@ -176,10 +176,18 @@ const negatedPositive = hasNegation && hasPositiveWord;
     // rejection => negative
     // activity gives boost (positive)
     let delta = 0;
-    if (isBetrayal) delta -= 18;
-    else if (directRejection) delta -= 12;
-    else if (severity === 2 && negCount > posCount) delta -= 8;
-    else if (severity === 1 && negCount > posCount) delta -= 5;
+
+if (isBetrayal) {
+  delta -= 18;
+} else if (directRejection) {
+  delta -= 12;
+} else if (negatedPositive) {
+  delta -= 5;
+} else if (severity === 2 && negCount > posCount) {
+  delta -= 8;
+} else if (severity === 1 && negCount > posCount) {
+  delta -= 5;
+}
 
     // positive words can increase a bit
     if (posCount > negCount && activityBoost === 0) delta += Math.min(8, posCount * 2);
