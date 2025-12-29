@@ -186,66 +186,116 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---------- NEXT MOVE POOLS ----------
   const POOLS = {
+
   betrayal: [
-    "Betrayal detected. This requires distance and dignity. Pause initiating contact, protect your energy, and rebuild personal routine. If she shows consistent remorse and effort over time, reassess later.",
-    "Trust has been broken. Do not beg or chase. Step back for at least 2 weeks, focus on yourself, and only re-engage if consistent respectful effort appears.",
-    "This is serious — prioritize your boundaries. Avoid emotional confrontations in text; meet only if you feel safe and there are sincere accountable actions.",
-    "Respect yourself enough to stop explaining pain to someone who caused it. Step back and let silence do the work.",
-    "Cheating breaks trust, not just feelings. Do not rush forgiveness — consistency over time is the only proof that matters.",
-    "Right now, distance is strength. Reclaim your time, your focus, and your emotional stability.",
-    "You don’t need closure conversations. You need clarity — and clarity comes from stepping away.",
-    "Pause emotional access completely. If accountability is real, it will show without pressure.",
-    "Choose dignity over attachment. No chasing, no arguments, no emotional bargaining."
+    "Betrayal detected. This requires distance and dignity. Pause initiating contact and protect your energy.",
+    "Trust has been broken. Do not beg, explain, or chase. Step back and observe actions over words.",
+    "Right now, distance is strength. Reclaim your emotional stability and routine.",
+    "Do not rush forgiveness. Consistency over time is the only proof that matters.",
+    "Silence here is not weakness — it is self-respect.",
+    "Avoid emotional confrontations through text. Calm space brings clarity.",
+    "Focus on yourself and let time reveal true intent.",
+    "You don’t need closure conversations. You need peace and boundaries.",
+    "Pause emotional access completely. If accountability is real, it will appear.",
+    "Choose dignity over attachment. No chasing, no arguments, no bargaining.",
+    "Let her feel the consequence of losing access to you.",
+    "Trust is rebuilt by behavior, not apologies.",
+    "Do not explain your pain repeatedly to someone who caused it.",
+    "Distance now prevents deeper damage later.",
+    "Self-respect must come before emotional attachment."
   ],
 
   rejection: [
-    "That was a clear boundary. Accept it with dignity — do not beg. Reduce contact for a while and focus on small personal wins.",
-    "Direct rejection hurts. Protect your energy: pause initiating contact, lean on friends, rebuild routine. Avoid long messages asking for reasons.",
-    "Give space and stop trying to change her mind. Re-engage only if she shows consistent effort.",
-    "Accept the boundary without drama. Pull back gracefully and protect your self-worth.",
-    "Don’t try to convince someone who has already decided. Let your absence speak.",
-    "Rejection is information, not a challenge. Redirect energy into your own growth.",
-    "Give space fully, not halfway. Anything forced will backfire.",
-    "Stop emotional investment and regain balance before deciding any next step."
+    "That was a clear boundary. Accept it with dignity and do not push further.",
+    "Rejection is information, not a challenge to overcome.",
+    "Pull back gracefully and protect your self-worth.",
+    "Do not try to convince someone who has already decided.",
+    "Give space fully, not halfway.",
+    "Avoid emotional speeches or explanations.",
+    "Let your absence speak louder than words.",
+    "Redirect energy into yourself and your goals.",
+    "Clarity comes when effort stops being forced.",
+    "Respect the answer and regain balance.",
+    "Chasing after rejection reduces attraction.",
+    "Focus on rebuilding confidence, not approval.",
+    "Give yourself time before deciding next steps.",
+    "No response is still a response — accept it calmly."
   ],
 
   distance: [
-    "Signals show distance. Reduce initiation for 48–72 hours and send one calm check-in afterwards if needed. Keep tone light and avoid heavy messages.",
-    "She’s pulling away. Match energy: short, warm replies, no chasing.",
-    "Give space and focus on your routine. If she reaches out, respond warmly but briefly.",
-    "Match her energy instead of compensating for it.",
-    "Silence for a short period can reveal intent better than questions.",
-    "Keep responses calm and brief.",
-    "Let consistency guide your next move."
+    "She’s pulling back. Match her energy instead of compensating for it.",
+    "Reduce initiation and observe her effort.",
+    "Silence for a short period reveals intent better than questions.",
+    "Keep replies calm, warm, and brief.",
+    "Avoid emotional explanations — they increase distance.",
+    "Let consistency guide your next decision.",
+    "Do not chase mixed signals.",
+    "Give space and see what returns naturally.",
+    "Less effort now can create clarity later.",
+    "Stop filling gaps she leaves.",
+    "Let her meet you at your level.",
+    "Focus on your routine while observing patterns.",
+    "Distance often tests real interest."
   ],
 
   positive: [
-    "Momentum is good. Reinforce with a casual plan and keep things confident and light.",
-    "You're moving forward. Suggest a low-pressure meet and enjoy the moment.",
-    "Things are moving well. Stay relaxed and avoid over-planning.",
-    "Build attraction through presence, not pressure.",
-    "Let things unfold naturally."
+    "Momentum is good. Keep things light and confident.",
+    "Suggest a simple, low-pressure plan.",
+    "Enjoy the connection without trying to control it.",
+    "Consistency matters more than intensity.",
+    "Stay relaxed and let things unfold naturally.",
+    "Avoid rushing emotional depth.",
+    "Let attraction grow through presence.",
+    "Keep communication balanced and calm.",
+    "Small moments matter more than big promises.",
+    "Build comfort, not pressure.",
+    "Stay grounded and enjoy the flow.",
+    "Confidence grows from patience."
   ],
 
   conflict: [
-    "Conflict detected. Avoid escalation — apologize briefly if needed.",
-    "Step away from the argument before it escalates.",
-    "Say less, not more.",
-    "Let emotions settle before discussing anything important."
+    "Conflict detected. Step back before emotions escalate.",
+    "Say less, not more — calm creates resolution.",
+    "Let emotions cool before discussing anything important.",
+    "Do not try to win the conversation.",
+    "Space now prevents regret later.",
+    "Avoid long emotional texts.",
+    "Stability comes before solutions.",
+    "Pause and revisit the topic later.",
+    "Clarity improves after emotions settle.",
+    "Protect the connection by slowing down.",
+    "Emotional control matters more than being right."
   ],
 
   activity: [
-    "Physical closeness happened — follow up gently within 24–48 hours.",
-    "A shared moment opens chance for deeper connection.",
-    "Follow up warmly, but don’t rush emotional depth.",
-    "Consistency beats intensity after real-life interaction."
+    "A shared moment creates opportunity — follow up gently.",
+    "Keep the tone grounded and warm.",
+    "Do not rush emotional commitment after closeness.",
+    "Let attraction breathe between interactions.",
+    "Consistency after meeting matters most.",
+    "Enjoy the moment without attaching expectations.",
+    "Follow up naturally, not intensely.",
+    "Allow space to maintain attraction.",
+    "Real connection grows between meetings.",
+    "Stay relaxed and present.",
+    "Avoid over-analyzing what already happened."
   ],
 
   default: [
-    "Stay steady: small, consistent contact wins.",
-    "Observe and keep composing yourself.",
-    "Calm confidence attracts more than chasing."
+    "Stay steady and observe patterns.",
+    "Avoid overthinking — time reveals intent.",
+    "Focus on your routine and balance.",
+    "Let actions guide you more than assumptions.",
+    "No rush — clarity builds gradually.",
+    "Keep emotions regulated and grounded.",
+    "Consistency beats urgency.",
+    "Let things develop naturally.",
+    "Stay calm and self-focused.",
+    "Balance attention with independence.",
+    "Do not force momentum.",
+    "Patience creates better outcomes."
   ]
+
 };
   // ---------- NEXT MOVE GENERATOR ----------
   function generateNextMove(person, analysis) {
