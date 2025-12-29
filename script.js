@@ -203,6 +203,10 @@ if (!negatedPositive && posCount > negCount && activityBoost === 0) {
     } else {
       delta = clamp(Math.round(delta), -20, 20);
     }
+    // STEP 4: repetition dampener (prevents emotional stacking)
+if (posCount > 0 && !negatedPositive && !activityBoost) {
+  delta = Math.round(delta * 0.5);
+}
 
     // Compose signals
     const signals = [];
