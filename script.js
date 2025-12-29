@@ -62,7 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function analyzeNotes(rawText){
     const raw = (rawText||"").trim();
     const t = raw.toLowerCase();
-    // ===== BETRAYAL DETECTION (HARD OVERRIDE) =====
+    if (!t) return { delta:0, signals:[], tags:[], severity:0, activityBoost:0, reason:"" };
+// ===== BETRAYAL DETECTION (HARD OVERRIDE) =====
 const betrayalPatterns = [
   "cheated",
   "cheating",
@@ -87,8 +88,6 @@ if (isBetrayal) {
     reason: "trust betrayal detected"
   };
 }
-    if (!t) return { delta:0, signals:[], tags:[], severity:0, activityBoost:0, reason:"" };
-
     const positive = ["love","liked","enjoyed","happy","comfortable","close","connected","vibed"];
     const negative = ["ignore","ignored","no reply","doesn't reply","does not reply","didn't reply","dry","hate","hates","not love","does not love","doesn't love","rejected","ghost","ghosted","argue","fight","hurt"];
     const activityMap = [
