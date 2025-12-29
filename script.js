@@ -188,8 +188,10 @@ if (isBetrayal) {
   delta -= 5;
 }
 
-    // positive words can increase a bit
-    if (posCount > negCount && activityBoost === 0) delta += Math.min(8, posCount * 2);
+    // positive words can increase only if NOT negated
+if (!negatedPositive && posCount > negCount && activityBoost === 0) {
+  delta += Math.min(8, posCount * 2);
+}
 
     // sentiment nudges
     delta += sentiment;
