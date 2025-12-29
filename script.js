@@ -290,6 +290,13 @@ if (isBetrayal) {
         const analysis = analyzeNotes(quick);
         let newFocus = clamp(Math.round(p.focus + analysis.delta), 0, 100);
         if (newFocus > 95 && analysis.activityBoost < 20) newFocus = Math.min(newFocus, 95);
+        // ===== BETRAYAL FOCUS CAP =====
+if (
+  p.notesHistory &&
+  p.notesHistory.some(n => n.analysis && n.analysis.tags?.includes("betrayal"))
+) {
+  newFocus = Math.min(newFocus, 45);
+}
         p.focus = newFocus;
 
         // if activity tag exists, set a simple icon / label for card
