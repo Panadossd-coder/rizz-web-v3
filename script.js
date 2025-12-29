@@ -183,6 +183,15 @@ if (isBetrayal) {
   function generateNextMove(person, analysis) {
     person.adviceHistory = person.adviceHistory || [];
     let pool = POOLS.default;
+    // ===== BETRAYAL OVERRIDE =====
+if (analysis.signals.includes("betrayal")) {
+  pool = [
+    "Trust was broken. Do not reward betrayal with attention. Step back completely and protect your self-respect.",
+    "Cheating changes the rules. Pause emotional investment and focus on yourself — clarity comes from distance, not chasing.",
+    "Betrayal detected. Reduce contact and observe silently. Let actions reveal truth, not promises.",
+    "This is not a momentum phase. Guard your dignity, slow everything down, and prioritize emotional safety."
+  ];
+}
     if (analysis.signals.includes("rejection")) pool = POOLS.rejection;
     else if (analysis.signals.includes("distance")) pool = POOLS.distance;
     else if (analysis.signals.includes("positive")) pool = POOLS.positive;
