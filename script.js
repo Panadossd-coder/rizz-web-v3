@@ -77,7 +77,33 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!t) return { delta: 0, signals: [], tags: [], severity: 0, activityBoost: 0, reason: "" };
 
     // Patterns / lexicons
-    const positive = ["love", "liked", "enjoyed", "happy", "comfortable", "close", "connected", "vibed", "loves", "loved"];
+    const positive = [
+  " i love ",
+  " i love her",
+  " i love him",
+  " i love you",
+  " i really love ",
+  " i care about ",
+  " i miss her",
+  " i miss him",
+  " i miss you",
+  " i feel close",
+  " i feel connected",
+  " i enjoy being with",
+  " i enjoyed being with",
+  " i feel comfortable",
+  " i feel safe with",
+  " i like her",
+  " i like him",
+  " i like you",
+  " i liked her",
+  " i liked him",
+  " i liked you",
+  " makes me happy",
+  " makes me feel good",
+  " i’m happy with",
+  " i am happy with"
+];
     const negative = ["ignore", "ignored", "no reply", "doesn't reply", "does not reply", "didn't reply", "dry", "hate", "hates", "not love", "does not love", "doesn't love", "rejected", "ghost", "ghosted", "argue", "fight", "cheat", "cheated", "cheating", "betray", "betrayed"];
     const activityMap = [
       { kws: ["we had sex", "made love", "had sex", "we slept"], v: 20, tag: "sex" },
