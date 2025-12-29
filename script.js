@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // This function returns: { delta, signals:[], tags:[], severity, activityBoost, reason }
   function analyzeNotes(rawText) {
     const raw = (rawText || "").trim();
+    // normalize note for repetition detection
+const normalized = raw.toLowerCase().replace(/\s+/g, " ").trim();
     const t = raw.toLowerCase();
     // Patterns / lexicons
 const positive = [
