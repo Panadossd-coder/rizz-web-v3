@@ -133,7 +133,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const isBetrayal = betrayalPatterns.some(pat => t.includes(pat));
 
     // quick counts
-    const posCount = positive.reduce((s, w) => s + (t.includes(w) ? 1 : 0), 0);
+    const posCount = hasNegation
+  ? 0
+  : positive.reduce((s, w) => s + (t.includes(w) ? 1 : 0), 0);
     const negCount = negative.reduce((s, w) => s + (t.includes(w) ? 1 : 0), 0);
 
     // direct rejection patterns
