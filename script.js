@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function analyzeNotes(rawText) {
     const raw = (rawText || "").trim();
     const t = raw.toLowerCase();
+    const hasNegation = /\b(not|don't|dont|never|no)\b/.test(t);
     if (!t) return { delta: 0, signals: [], tags: [], severity: 0, activityBoost: 0, reason: "" };
 
     // Patterns / lexicons
