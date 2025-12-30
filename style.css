@@ -415,3 +415,60 @@ button[type="submit"] {
   box-shadow: 0 0 0 1px rgba(0,210,140,0.45),
               0 16px 44px rgba(0,210,140,0.35);
 }
+/* ===============================
+   Gradient Edge Borders (v4 style)
+   =============================== */
+
+.person {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+/* subtle gradient edge using pseudo-element */
+.person::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1.2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.08)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+/* focused card gets romantic gradient edge */
+.person.glow::before {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 180, 0.55),
+    rgba(255, 105, 180, 0.35),
+    rgba(0, 255, 180, 0.55)
+  );
+  animation: edgeFlow 6s linear infinite;
+}
+
+@keyframes edgeFlow {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+.person.paused::before,
+.person.low-focus::before {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.01)
+  );
+}
