@@ -43,7 +43,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const nowISO = () => new Date().toISOString();
   const saveStorage = () => localStorage.setItem("rizz_people", JSON.stringify(people));
   const escapeHtml = s => (s === undefined || s === null) ? "" : String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+// ---------- PERFORMANCE HELPERS ----------
+function debounce(fn, wait = 250) {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), wait);
+  };
+}
 
+const saveStorageDebounced = debounce(() => {
+  try {
+    localStorage.setItem("rizz_people", JSON.stringify(people));
+  } catch (e) {}
+}, 250);
+
+let renderScheduled = false;
+function scheduleRender() {
+  if (renderScheduled) return;
+  renderScheduled = true;
+  requestAnimationFrame(() => {
+    renderScheduled = false;
+    render();
+  });
+}
   // ---------- UI init ----------
   // status button group
   const statusButtons = document.querySelectorAll(".status-buttons button");
