@@ -472,3 +472,63 @@ button[type="submit"] {
     rgba(255, 255, 255, 0.01)
   );
 }
+/* ===============================
+   Liquid Focus Bar Motion (v4)
+   =============================== */
+
+.focus-bar {
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+/* main fill */
+.focus-fill {
+  position: relative;
+  height: 100%;
+  border-radius: inherit;
+}
+
+/* liquid light layer */
+.focus-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.05)
+  );
+  filter: blur(4px);
+  animation: liquidFlow 4.8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes liquidFlow {
+  0% {
+    transform: translateX(0%);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateX(160%);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(320%);
+    opacity: 0.3;
+  }
+}
+/* stronger liquid for focused cards */
+.person.glow .focus-fill::after {
+  opacity: 0.75;
+}
+
+/* calm liquid for low focus or paused */
+.person.low-focus .focus-fill::after,
+.person.paused .focus-fill::after {
+  opacity: 0.15;
+  animation-duration: 8s;
+}
