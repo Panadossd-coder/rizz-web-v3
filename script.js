@@ -489,12 +489,7 @@ function evaluatePositiveReward(person, phrase) {
     dashPause.textContent = pausedList.length ? pausedList.map(x => x.name).join(", ") : "—";
     dashAction.textContent = focusCandidate ? focusCandidate.nextMove : "Observe and keep composing yourself. Calm confidence attracts more than chasing.";
   }
-  // ===== Dashboard visual state =====
-const dashboard = document.querySelector(".dashboard");
-if (dashboard) {
-  dashboard.classList.remove("has-focus", "no-focus");
-  dashboard.classList.add(focusCandidate ? "has-focus" : "no-focus");
-}
+  
 
   // ---------- ADD PERSON ----------
   if (form) {
