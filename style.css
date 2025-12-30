@@ -25,7 +25,11 @@ html, body {
   margin: 0 auto;
   padding: 20px;
   padding-bottom: calc(env(safe-area-inset-bottom) + 24px);
-  background: #000; /* MATCH body to avoid cut */
+  background: #000;
+
+  /* subtle bottom depth — iOS safe */
+  box-shadow: inset 0 -40px 60px rgba(0,0,0,0.35);
+}
 }
 
 /* HEADINGS */
