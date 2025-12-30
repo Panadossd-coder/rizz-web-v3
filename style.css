@@ -10,8 +10,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  min-height: 100%;
-  background: #0b0d10; /* SAME as app background */
+  height: 100%;
+  background: #0b0d10;
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -24,18 +24,12 @@ body {
 
 /* APP WRAPPER — iOS SAFE HEIGHT FIX */
 .app {
-  min-height: 100svh; /* iOS correct height */
+  min-height: 100svh; /* ✅ correct iOS viewport */
   max-width: 640px;
   margin: 0 auto;
   padding: 20px;
   padding-bottom: calc(env(safe-area-inset-bottom) + 24px);
-
-  background: linear-gradient(
-    to bottom,
-    #0b0d10 0%,
-    #0b0d10 85%,
-    #000 100%
-  );
+  background: #0b0d10; /* MUST match body */
 }
 
 /* HEADINGS */
