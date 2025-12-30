@@ -202,10 +202,18 @@ if (isBetrayal) {
   // positive reward (controlled by system)
 let reward = 0;
 
-if (!negatedPositive && (posCount > negCount || isExternalLove) && activityBoost === 0) {
+if (
+  !negatedPositive &&
+  (posCount > negCount || isExternalLove) &&
+  activityBoost === 0 &&
+  person
+) {
   const phrase = normalizeText(raw);
-  reward = 3;
 
+  // system decides reward based on history
+  reward = evaluatePositiveReward(person, phrase);
+
+  // external confirmation gets a guaranteed minimum
   if (isExternalLove) {
     reward = Math.max(reward, 4);
   }
