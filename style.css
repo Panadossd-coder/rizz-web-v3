@@ -357,3 +357,46 @@ button[type="submit"] {
   height: 6px;
   border-radius: 6px;
 }
+/* ===============================
+   PERSON CARD GLOW SYSTEM
+   =============================== */
+
+/* Base person card */
+.person {
+  position: relative;
+  border-radius: 18px;
+  background: #0f1112;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+/* Subtle lift on hover / tap */
+.person:active {
+  transform: translateY(-2px);
+}
+
+/* 🌟 Active glow (default soft glow) */
+.person.glow {
+  box-shadow:
+    0 0 0 1px rgba(255, 150, 200, 0.12),
+    0 18px 45px rgba(255, 120, 180, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* 💚 High focus glow (60%+) */
+.person.glow-high {
+  box-shadow:
+    0 0 0 1px rgba(0, 220, 150, 0.18),
+    0 20px 55px rgba(0, 220, 150, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 🔴 Low focus / warning glow */
+.person.glow-low {
+  box-shadow:
+    0 0 0 1px rgba(255, 100, 100, 0.16),
+    0 18px 45px rgba(255, 80, 80, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
