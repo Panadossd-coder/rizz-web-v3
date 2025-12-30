@@ -500,8 +500,8 @@ if (isPaused) {
     });
 
     updateDashboard();
-    saveStorage();
-  }
+}
+    
 
   // ---------- DASHBOARD ----------
   function updateDashboard() {
