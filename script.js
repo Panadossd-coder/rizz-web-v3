@@ -204,8 +204,7 @@ let reward = 0;
 
 if (!negatedPositive && (posCount > negCount || isExternalLove) && activityBoost === 0) {
   const phrase = normalizeText(raw);
-  const personForEval = (typeof windowPerson !== "undefined") ? windowPerson : null;
-  reward = evaluatePositiveReward(personForEval, phrase);
+  reward = 3;
 
   if (isExternalLove) {
     reward = Math.max(reward, 4);
