@@ -532,3 +532,15 @@ button[type="submit"] {
   opacity: 0.15;
   animation-duration: 8s;
 }
+/* ===============================
+   REMOVE PERSON CARD REFLECTION
+   =============================== */
+
+.person::before,
+.person::after,
+.person.glow::before,
+.person.glow::after {
+  content: none !important;
+  animation: none !important;
+  background: none !important;
+}
