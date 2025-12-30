@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---------- NOTES INTELLIGENCE ----------
   // This function returns: { delta, signals:[], tags:[], severity, activityBoost, reason }
-  function analyzeNotes(rawText, person) {
+  function analyzeNotes(rawText, person = null) {
     const raw = (rawText || "").trim();
     // normalize note for repetition detection
 const normalized = raw.toLowerCase().replace(/\s+/g, " ").trim();
@@ -612,7 +612,7 @@ function evaluatePositiveReward(person, phrase) {
     const noteText = (editNotes.value || "").trim();
     const apply = autoNotes ? !!autoNotes.checked : true;
     if (noteText && apply) {
-      const analysis = analyzeNotes(noteText);
+      const analysis = analyzeNotes(noteText, p);
       // ===== REPETITION DAMPENER (EDIT ONLY) =====
 const normalized = noteText.toLowerCase().replace(/\s+/g, " ").trim();
 const recentNotes = (p.notesHistory || [])
