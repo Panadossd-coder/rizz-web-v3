@@ -1,128 +1,91 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Rizz Web — Version 2.4</title>
-
-  <!-- IMPORTANT for iOS Safari -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rizz Web v2.4 — Notes Authority</title>
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="app">
+  <!-- ================= DASHBOARD ================= -->
+  <section class="dashboard">
+    <h2>💘 Today’s Dashboard</h2>
+    <div><strong>🎯 Focus:</strong> <span id="dashFocus">—</span></div>
+    <div><strong>⏸ Pause:</strong> <span id="dashPause">—</span></div>
+    <div><strong>🧠 Action:</strong> <span id="dashAction">Add someone to begin.</span></div>
+  </section>
 
-    <h1>Rizz Web</h1>
-    <div class="sub">Version 2.4 — Notes Authority</div>
+  <!-- ================= ADD PERSON ================= -->
+  <form id="addForm">
+    <h3>Add Person</h3>
 
-    <!-- DASHBOARD -->
-    <div id="dashboard" class="card dashboard">
-      <h3>💘 Today’s Dashboard</h3>
-      <div class="dash-item">🎯 Focus: <span id="dashFocus">—</span></div>
-      <div class="dash-item">⏸ Pause: <span id="dashPause">—</span></div>
-      <div class="dash-item">🧠 Action: <span id="dashAction">Add someone to begin.</span></div>
+    <input name="name" placeholder="Name" required />
+
+    <!-- STATUS BUTTONS -->
+    <div class="status-buttons">
+      <button type="button" data-status="crush">💘 Crush</button>
+      <button type="button" data-status="dating">💞 Dating</button>
+      <button type="button" data-status="pause">⏸ Pause</button>
     </div>
 
-    <div class="card status">✅ Version 2.4 running (Notes Authority)</div>
+    <input type="hidden" name="status" value="crush" />
 
-    <!-- ADD PERSON FORM -->
-    <form id="addForm" class="card">
+    <!-- FOCUS CONTROL -->
+    <div class="focus-control">
+      <button type="button" id="minus">−</button>
+      <span id="focusValue">0%</span>
+      <button type="button" id="plus">+</button>
+    </div>
 
-      <input
-        type="text"
-        name="name"
-        placeholder="Name"
-        autocomplete="off"
-        required
-      />
+    <input type="hidden" name="focus" value="0" />
 
-      <!-- STATUS -->
-      <div class="label">Status</div>
-      <div class="status-buttons">
-        <button type="button" data-status="crush">💘 Crush</button>
-        <button type="button" data-status="dating">💞 Dating</button>
-        <button type="button" data-status="pause">⏸ Pause</button>
-      </div>
+    <!-- QUICK NOTE -->
+    <textarea name="quickNote" placeholder="Optional quick note (can expand later in Edit)"></textarea>
 
-      <!-- REQUIRED hidden input -->
-      <input type="hidden" name="status" value="crush" />
+    <!-- REMINDER -->
+    <input name="reminder" placeholder="Reminder (optional)" />
 
-      <!-- FOCUS -->
-      <div class="label">Set Focus</div>
-      <div class="focus-control">
-        <button type="button" id="minus">−</button>
-        <span id="focusValue">0%</span>
-        <button type="button" id="plus">+</button>
-      </div>
+    <button type="submit">Add</button>
+  </form>
 
-      <!-- REQUIRED hidden input -->
-      <input type="hidden" name="focus" value="0" />
+  <!-- ================= PEOPLE LIST ================= -->
+  <section id="peopleList"></section>
 
-      <!-- QUICK NOTE -->
-      <textarea
-        name="quickNote"
-        placeholder="Optional quick note (can expand later in Edit)"
-      ></textarea>
-
-      <!-- REMINDER -->
-      <input
-        type="text"
-        name="reminder"
-        placeholder="Reminder (optional)"
-      />
-
-      <!-- SUBMIT -->
-      <button type="submit">Add</button>
-
-    </form>
-
-    <!-- PEOPLE LIST -->
-    <div id="peopleList"></div>
-
-  </div>
-
-  <!-- EDIT MODAL -->
-  <div id="editModal" class="edit-modal hidden">
-    <div class="edit-box">
-
+  <!-- ================= EDIT MODAL ================= -->
+  <div id="editModal" class="modal hidden">
+    <div class="modal-content">
       <h3>Edit Person</h3>
 
-      <input id="editName" placeholder="Name" />
-
+      <input id="editName" />
       <select id="editStatus">
-        <option value="crush">💘 Crush</option>
-        <option value="dating">💞 Dating</option>
-        <option value="pause">⏸ Pause</option>
+        <option value="crush">Crush</option>
+        <option value="dating">Dating</option>
+        <option value="pause">Pause</option>
       </select>
 
-      <div class="label">Focus (manual override)</div>
-      <input type="range" id="editFocus" min="0" max="100" />
-      <div id="editFocusValue">0%</div>
-
-      <div class="label">Notes (write freely — long text allowed)</div>
-      <textarea
-        id="editNotes"
-        placeholder="Write how you feel. This will be interpreted, archived, then cleared."
-      ></textarea>
-
-      <label class="auto-row">
-        <input type="checkbox" id="autoNotes" checked />
-        <span class="auto-text">Auto-apply Notes Intelligence</span>
-      </label>
-
-      <button type="button" id="viewHistory">View Notes History</button>
-
-      <div class="edit-actions">
-        <button type="button" id="cancelEdit">Cancel</button>
-        <button type="button" id="saveEdit">Save</button>
+      <div class="focus-control">
+        <input type="range" id="editFocus" min="0" max="100" />
+        <span id="editFocusValue">0%</span>
       </div>
 
+      <textarea id="editNotes" placeholder="Write how you feel. This will be interpreted, archived, then cleared."></textarea>
+
+      <label>
+        <input type="checkbox" id="autoNotes" checked />
+        Auto-apply Notes Intelligence
+      </label>
+
+      <div class="modal-actions">
+        <button id="viewHistory" type="button">View Notes History</button>
+        <button id="cancelEdit" type="button">Cancel</button>
+        <button id="saveEdit" type="button">Save</button>
+      </div>
     </div>
   </div>
 
-  <!-- SCRIPT -->
+  <!-- ================= SCRIPT ================= -->
   <script src="script.js"></script>
-
 </body>
 </html>
