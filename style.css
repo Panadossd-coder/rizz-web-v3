@@ -357,3 +357,30 @@ button[type="submit"] {
   height: 6px;
   border-radius: 6px;
 }
+/* ===============================
+   STEP 3 — FORCE EDIT SLIDER FULL WIDTH
+   =============================== */
+
+/* any range slider inside edit modal */
+.edit-modal input[type="range"],
+.edit-box input[type="range"] {
+  width: 100% !important;
+  display: block;
+}
+
+/* ensure parent doesn't constrain it */
+.edit-box > * {
+  max-width: 100%;
+}
+
+/* iOS WebKit track */
+.edit-modal input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 6px;
+}
+
+/* iOS thumb centering */
+.edit-modal input[type="range"]::-webkit-slider-thumb {
+  margin-top: -6px;
+}
