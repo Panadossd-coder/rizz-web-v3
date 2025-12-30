@@ -9,83 +9,121 @@
 </head>
 <body>
 
-  <!-- ================= DASHBOARD ================= -->
-  <section class="dashboard">
-    <h2>💘 Today’s Dashboard</h2>
-    <div><strong>🎯 Focus:</strong> <span id="dashFocus">—</span></div>
-    <div><strong>⏸ Pause:</strong> <span id="dashPause">—</span></div>
-    <div><strong>🧠 Action:</strong> <span id="dashAction">Add someone to begin.</span></div>
-  </section>
+  <div class="app">
 
-  <!-- ================= ADD PERSON ================= -->
-  <form id="addForm">
-    <h3>Add Person</h3>
+    <!-- ================= DASHBOARD ================= -->
+    <section class="dashboard">
+      <h2>💘 Today’s Dashboard</h2>
+      <div class="dash-item">
+        🎯 <strong>Focus:</strong> <span id="dashFocus">—</span>
+      </div>
+      <div class="dash-item">
+        ⏸ <strong>Pause:</strong> <span id="dashPause">—</span>
+      </div>
+      <div class="dash-item">
+        🧠 <strong>Action:</strong> <span id="dashAction">Add someone to begin.</span>
+      </div>
+    </section>
 
-    <input name="name" placeholder="Name" required />
+    <!-- ================= ADD PERSON ================= -->
+    <form id="addForm" class="card">
+      <h3>Add Person</h3>
 
-    <!-- STATUS BUTTONS -->
-    <div class="status-buttons">
-      <button type="button" data-status="crush">💘 Crush</button>
-      <button type="button" data-status="dating">💞 Dating</button>
-      <button type="button" data-status="pause">⏸ Pause</button>
-    </div>
+      <input
+        type="text"
+        name="name"
+        placeholder="Name"
+        required
+      />
 
-    <input type="hidden" name="status" value="crush" />
+      <!-- STATUS BUTTONS -->
+      <div class="status-buttons">
+        <button type="button" data-status="crush">💘 Crush</button>
+        <button type="button" data-status="dating">💞 Dating</button>
+        <button type="button" data-status="pause">⏸ Pause</button>
+      </div>
 
-    <!-- FOCUS CONTROL -->
-    <div class="focus-control">
-      <button type="button" id="minus">−</button>
-      <span id="focusValue">0%</span>
-      <button type="button" id="plus">+</button>
-    </div>
+      <!-- hidden status -->
+      <input type="hidden" name="status" value="crush" />
 
-    <input type="hidden" name="focus" value="0" />
+      <!-- FOCUS CONTROL -->
+      <div class="focus-control">
+        <button type="button" id="minus">−</button>
+        <span id="focusValue">0%</span>
+        <button type="button" id="plus">+</button>
+      </div>
 
-    <!-- QUICK NOTE -->
-    <textarea name="quickNote" placeholder="Optional quick note (can expand later in Edit)"></textarea>
+      <!-- hidden focus -->
+      <input type="hidden" name="focus" value="0" />
 
-    <!-- REMINDER -->
-    <input name="reminder" placeholder="Reminder (optional)" />
+      <!-- QUICK NOTE -->
+      <textarea
+        name="quickNote"
+        placeholder="Optional quick note (can expand later in Edit)"
+      ></textarea>
 
-    <button type="submit">Add</button>
-  </form>
+      <!-- REMINDER -->
+      <input
+        type="text"
+        name="reminder"
+        placeholder="Reminder (optional)"
+      />
 
-  <!-- ================= PEOPLE LIST ================= -->
-  <section id="peopleList"></section>
+      <button type="submit">Add</button>
+    </form>
+
+    <!-- ================= PEOPLE LIST ================= -->
+    <section id="peopleList"></section>
+
+  </div>
 
   <!-- ================= EDIT MODAL ================= -->
-  <div id="editModal" class="modal hidden">
-    <div class="modal-content">
+  <div id="editModal" class="edit-modal hidden">
+    <div class="edit-box">
+
       <h3>Edit Person</h3>
 
-      <input id="editName" />
+      <input id="editName" placeholder="Name" />
+
       <select id="editStatus">
         <option value="crush">Crush</option>
         <option value="dating">Dating</option>
         <option value="pause">Pause</option>
       </select>
 
+      <!-- EDIT FOCUS -->
       <div class="focus-control">
         <input type="range" id="editFocus" min="0" max="100" />
         <span id="editFocusValue">0%</span>
       </div>
 
-      <textarea id="editNotes" placeholder="Write how you feel. This will be interpreted, archived, then cleared."></textarea>
+      <!-- NOTES -->
+      <textarea
+        id="editNotes"
+        placeholder="Write how you feel. This will be interpreted, archived, then cleared."
+      ></textarea>
 
-      <label>
+      <!-- AUTO NOTES -->
+      <div class="auto-row">
         <input type="checkbox" id="autoNotes" checked />
-        Auto-apply Notes Intelligence
-      </label>
+        <span class="auto-text">Auto-apply Notes Intelligence</span>
+      </div>
 
-      <div class="modal-actions">
-        <button id="viewHistory" type="button">View Notes History</button>
+      <!-- ACTIONS -->
+      <button id="viewHistory" type="button">
+        View Notes History
+      </button>
+
+      <div class="card-actions">
         <button id="cancelEdit" type="button">Cancel</button>
         <button id="saveEdit" type="button">Save</button>
       </div>
+
     </div>
   </div>
 
   <!-- ================= SCRIPT ================= -->
   <script src="script.js"></script>
+
 </body>
 </html>
