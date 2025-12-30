@@ -20,14 +20,14 @@ html, body {
 
 /* APP WRAPPER — iOS SAFE HEIGHT FIX */
 .app {
-  min-height: 100svh; /* iOS correct viewport */
+  min-height: 100svh;
   max-width: 640px;
   margin: 0 auto;
   padding: 20px;
   padding-bottom: calc(env(safe-area-inset-bottom) + 24px);
   background: #000;
 
-  /* subtle bottom depth — iOS safe */
+  /* softened bottom blend */
   box-shadow: inset 0 -18px 28px rgba(0,0,0,0.18);
 }
 }
