@@ -229,6 +229,43 @@ if (posCount > 0 && !negatedPositive && !activityBoost) {
 
     return { delta, signals, tags: signals, severity, activityBoost, reason };
   }
+  // ================== POSITIVE PHRASE MEMORY ==================
+function normalizeText(t) {
+  return t.toLowerCase().replace(/[^\w\s]/g, "").trim();
+}
+
+function isSameLocalDay(a, b) {
+  const d1 = new Date(a);
+  const d2 = new Date(b);
+  return d1.toDateString() === d2.toDateString();
+}
+
+function evaluatePositiveReward(person, phrase) {
+  const today = new Date();
+
+  const history = (person.notesHistory || [])
+    .filter(n => n.delta > 0)
+    .map(n => ({
+      phrase: normalizeText(n.text),
+      time: new Date(n.time)
+    }));
+
+  const samePhraseToday = history.some(
+    h => h.phrase === phrase && isSameLocalDay(h.time, today)
+  );
+
+  if (samePhraseToday) {
+    return 0; // no reward same day
+  }
+
+  const samePhraseBefore = history.some(h => h.phrase === phrase);
+
+  if (samePhraseBefore) {
+    return 1; // reduced reward on later days
+  }
+
+  return 3; // full reward first time ever
+}
 
   // ---------- NEXT MOVE POOLS ----------
   const POOLS = {
