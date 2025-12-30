@@ -328,3 +328,91 @@ button,
 button:active {
   transform: scale(0.97);
 }
+/* =========================
+   FIX: Edit Modal Layering
+   ========================= */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  width: 92%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  background: linear-gradient(
+    160deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03)
+  );
+
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.6),
+    inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+/* =========================
+   Dashboard Glass Polish
+   ========================= */
+
+.dashboard {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.10),
+    rgba(255,255,255,0.04)
+  );
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.dashboard::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.12),
+    transparent
+  );
+  transform: rotate(12deg);
+  opacity: 0.4;
+  pointer-events: none;
+}
+/* =========================
+   Person Card Stability
+   ========================= */
+
+.person {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.person.glow {
+  box-shadow:
+    0 0 0 1px rgba(255,105,180,0.35),
+    0 12px 30px rgba(255,105,180,0.25);
+}
+
+.person:active {
+  transform: scale(0.985);
+}
