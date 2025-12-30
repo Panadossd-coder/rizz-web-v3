@@ -332,3 +332,28 @@ button[type="submit"] {
 .card.add-person {
   margin-top: 10px;
 }
+/* ===============================
+   STEP 3 — EDIT SLIDER WIDTH FIX
+   =============================== */
+
+/* edit modal slider full width */
+.edit-box input[type="range"] {
+  width: 100%;
+  margin-top: 12px;
+}
+
+/* slider track height & elegance */
+.edit-box input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 6px;
+}
+
+.edit-box input[type="range"]::-webkit-slider-thumb {
+  margin-top: -6px; /* centers thumb */
+}
+
+/* Firefox */
+.edit-box input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 6px;
+}
