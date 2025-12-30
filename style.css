@@ -317,3 +317,18 @@ button[type="submit"] {
     animation: none;
   }
 }
+/* ===============================
+   STEP 2 — SECTION SPACING
+   Safe vertical breathing room
+   =============================== */
+
+/* space AFTER dashboard */
+.dashboard {
+  margin-bottom: 22px;
+}
+
+/* space BEFORE Add Person card */
+.add-person,
+.card.add-person {
+  margin-top: 10px;
+}
