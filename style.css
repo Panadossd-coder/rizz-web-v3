@@ -1,20 +1,21 @@
 /* =========================
-   RIZZ WEB v2.4 — GLASS ROMANCE UI
-   SAFE DROP-IN STYLE
+   Rizz Web v2.4 — Glass UI
+   SAFE RESTORE CSS
    ========================= */
 
 :root {
-  --bg-main: #0b0b10;
-  --glass: rgba(255, 255, 255, 0.08);
-  --glass-strong: rgba(255, 255, 255, 0.14);
-  --border-soft: rgba(255, 255, 255, 0.18);
-  --pink: #ff8ccf;
-  --pink-soft: rgba(255, 140, 207, 0.55);
-  --green: #27e0a6;
-  --text-main: #f4f4f7;
-  --text-dim: rgba(255,255,255,0.65);
+  --bg: #0b0b10;
+  --glass: rgba(255,255,255,0.08);
+  --glass-strong: rgba(255,255,255,0.12);
+  --border: rgba(255,255,255,0.18);
+  --pink: #ff7bbd;
+  --pink-soft: rgba(255,123,189,0.35);
+  --green: #2ddf88;
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.7);
 }
 
+/* ---------- BASE ---------- */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -22,224 +23,198 @@
 
 body {
   margin: 0;
-  background: radial-gradient(1200px 600px at top, #15151f, #07070b);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui;
-  color: var(--text-main);
+  padding: 18px 14px 120px;
+  background: radial-gradient(circle at top, #1a1a25, #050507 70%);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  color: var(--text);
 }
 
-/* ================= DASHBOARD ================= */
-
-.dashboard {
-  position: relative;
-  margin: 18px;
-  padding: 18px 20px;
-  border-radius: 22px;
+/* ---------- GLASS CORE ---------- */
+.dashboard,
+.person,
+form,
+.modal-content {
   background: linear-gradient(
     180deg,
     rgba(255,255,255,0.12),
-    rgba(255,255,255,0.05)
+    rgba(255,255,255,0.03)
   );
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid var(--border-soft);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid var(--border);
+  border-radius: 22px;
   box-shadow:
-    0 20px 50px rgba(0,0,0,0.45),
-    inset 0 1px 0 rgba(255,255,255,0.25);
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    0 18px 40px rgba(0,0,0,0.45);
+  position: relative;
   overflow: hidden;
-  transition: all 0.6s ease;
 }
 
-/* White reflection sweep */
-.dashboard::after {
+/* ---------- GLASS SHINE ---------- */
+.dashboard::before,
+.person::before,
+form::before {
   content: "";
   position: absolute;
-  top: -60%;
-  left: -40%;
-  width: 180%;
-  height: 200%;
+  inset: -60%;
   background: linear-gradient(
     120deg,
-    transparent 35%,
-    rgba(255,255,255,0.12) 50%,
-    transparent 65%
+    transparent 40%,
+    rgba(255,255,255,0.18),
+    transparent 60%
   );
-  transform: translateX(-60%);
-  animation: glassSweep 10s ease-in-out infinite;
+  transform: translateX(-100%);
+  animation: shine 9s ease-in-out infinite;
   pointer-events: none;
 }
 
-@keyframes glassSweep {
-  0% { transform: translateX(-60%); }
-  50% { transform: translateX(0%); }
-  100% { transform: translateX(-60%); }
+@keyframes shine {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
 }
 
-/* Dashboard glow when focus exists */
-.dashboard.has-focus {
-  box-shadow:
-    0 25px 60px rgba(255, 140, 207, 0.25),
-    inset 0 1px 0 rgba(255,255,255,0.35);
+/* ---------- DASHBOARD ---------- */
+.dashboard {
+  padding: 20px 18px;
+  margin-bottom: 18px;
+  animation: dashboardFloat 6s ease-in-out infinite;
+}
+
+@keyframes dashboardFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
 }
 
 .dashboard h2 {
-  margin: 0 0 12px;
-  font-weight: 700;
+  margin: 0 0 10px;
+  font-size: 22px;
 }
 
-/* ================= ADD PERSON ================= */
+.dashboard strong {
+  color: var(--pink);
+}
 
+/* ---------- ADD FORM ---------- */
 form {
-  margin: 18px;
-  padding: 20px;
-  border-radius: 22px;
-  background: var(--glass);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--border-soft);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.45);
+  padding: 18px;
+  margin-bottom: 26px;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   width: 100%;
-  margin-bottom: 14px;
-  padding: 14px 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.18);
-  color: var(--text-main);
+  padding: 14px;
+  color: white;
+  margin-bottom: 12px;
   font-size: 15px;
 }
 
 textarea {
-  resize: none;
   min-height: 80px;
+  resize: none;
 }
 
-/* ================= STATUS BUTTONS ================= */
-
+/* ---------- STATUS BUTTONS ---------- */
 .status-buttons {
   display: flex;
   gap: 10px;
-  margin-bottom: 16px;
+  margin: 12px 0;
 }
 
 .status-buttons button {
   flex: 1;
   padding: 12px;
-  border-radius: 18px;
+  border-radius: 999px;
   border: none;
-  background: rgba(255,255,255,0.08);
-  color: var(--text-dim);
-  font-weight: 600;
-  transition: all 0.35s ease;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  transition: all 0.3s ease;
 }
 
 .status-buttons button.active {
-  background: linear-gradient(135deg, #ff9bd9, #ff6fb8);
-  color: #000;
-  box-shadow: 0 8px 25px rgba(255,140,207,0.45);
+  background: linear-gradient(135deg, #ff86c8, #ff5fa6);
+  box-shadow: 0 0 20px rgba(255,120,190,0.6);
 }
 
-/* ================= FOCUS CONTROL ================= */
-
+/* ---------- FOCUS CONTROL ---------- */
 .focus-control {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin: 14px 0;
 }
 
 .focus-control button {
-  width: 44%;
-  padding: 16px 0;
-  border-radius: 22px;
+  width: 90px;
+  height: 48px;
+  border-radius: 18px;
   border: none;
-  background: linear-gradient(135deg, #ff9bd9, #ff6fb8);
-  color: #000;
+  font-size: 26px;
+  background: linear-gradient(135deg, #ff86c8, #ff5fa6);
+  color: black;
+  box-shadow: 0 0 22px rgba(255,120,190,0.55);
+}
+
+.focus-control span {
   font-size: 22px;
-  font-weight: 700;
-  box-shadow: 0 10px 30px rgba(255,140,207,0.4);
 }
 
-#focusValue {
-  font-size: 20px;
-  font-weight: 700;
+/* ---------- ADD BUTTON ---------- */
+form button[type="submit"] {
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  border: none;
+  font-size: 17px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #35ff9b, #18c777);
+  color: black;
+  box-shadow: 0 0 24px rgba(50,255,160,0.6);
 }
 
-/* ================= PERSON CARDS ================= */
-
+/* ---------- PERSON CARDS ---------- */
 .person {
-  margin: 16px 18px;
-  padding: 18px;
-  border-radius: 22px;
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-soft);
-  box-shadow:
-    0 20px 45px rgba(0,0,0,0.45),
-    inset 0 1px 0 rgba(255,255,255,0.2);
-  transition: all 0.45s ease;
+  padding: 16px;
+  margin-bottom: 16px;
+  animation: cardFloat 5s ease-in-out infinite;
 }
 
-/* Active glow */
+@keyframes cardFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
 .person.glow {
   box-shadow:
-    0 30px 60px rgba(255,140,207,0.35),
-    inset 0 1px 0 rgba(255,255,255,0.35);
+    0 0 30px rgba(255,120,190,0.65),
+    inset 0 1px 0 rgba(255,255,255,0.3);
 }
 
-/* Paused / low focus */
-.person.paused,
-.person.low-focus {
-  opacity: 0.55;
-  filter: saturate(0.7);
-}
-
-/* Focus bar */
-.focus-bar {
-  width: 100%;
+.person .focus-bar {
   height: 8px;
+  background: rgba(255,255,255,0.12);
   border-radius: 999px;
-  background: rgba(255,255,255,0.15);
   overflow: hidden;
-  margin: 10px 0;
+  margin: 8px 0;
 }
 
-.focus-fill {
+.person .focus-fill {
   height: 100%;
-  background: linear-gradient(90deg, #27e0a6, #7affd3);
-  border-radius: 999px;
-  transition: width 0.6s ease;
+  background: linear-gradient(90deg, #ff86c8, #ff5fa6);
 }
 
-/* ================= BUTTONS ================= */
-
-button {
-  cursor: pointer;
-}
-
-.card-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.card-actions button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 16px;
-  border: none;
-  background: rgba(255,255,255,0.1);
-  color: var(--text-main);
-}
-
-/* ================= MODAL ================= */
-
+/* ---------- MODAL ---------- */
 .modal {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -253,14 +228,12 @@ button {
 .modal-content {
   width: 92%;
   max-width: 420px;
-  padding: 22px;
-  border-radius: 26px;
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.14),
-    rgba(255,255,255,0.06)
-  );
-  backdrop-filter: blur(18px);
-  border: 1px solid var(--border-soft);
-  box-shadow: 0 25px 60px rgba(0,0,0,0.55);
+  padding: 18px;
+}
+
+/* ---------- FOOTER SAFE ---------- */
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: calc(120px + env(safe-area-inset-bottom));
+  }
 }
