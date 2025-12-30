@@ -1,418 +1,145 @@
-/* ===============================
-   Rizz Web v2.4 — Visual Lock
-   Glass + Romantic Motion (SAFE)
-   =============================== */
+=========================
+   Rizz Web — Version 2.4
+   Notes Authority — UI Fixes (Full CSS)
+   ========================= */
 
-:root {
-  --bg: #0b0d12;
-  --card: rgba(255, 255, 255, 0.08);
-  --stroke: rgba(255, 255, 255, 0.18);
-  --soft: rgba(255, 255, 255, 0.12);
-  --text: #ffffff;
-  --muted: rgba(255,255,255,0.65);
-
-  --pink: #ff8acb;
-  --pink-deep: #ff5fa8;
-  --green: #32ff9a;
-  --blue: #4cc3ff;
-
-  --radius: 22px;
-  --blur: 18px;
-}
-
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
+* { box-sizing: border-box; }
 
 html, body {
+  height: 100%;
   margin: 0;
-  padding: 0;
-  background: radial-gradient(1200px 600px at top, #151823, #07090d);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui;
+  background: #000;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
 }
 
 body {
-  padding: 18px 14px 80px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  background: radial-gradient(circle at top, #0a0b0e, #000);
 }
 
-/* ================= DASHBOARD ================= */
-
-.dashboard {
-  position: relative;
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.14),
-    rgba(255,255,255,0.04)
-  );
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  border-radius: var(--radius);
-  padding: 22px;
-  margin-bottom: 22px;
-  border: 1px solid var(--stroke);
-  box-shadow:
-    0 25px 50px rgba(0,0,0,0.55),
-    inset 0 1px 0 rgba(255,255,255,0.25);
-  overflow: hidden;
+/* APP */
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* glass reflection sweep */
-.dashboard::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background: linear-gradient(
-    120deg,
-    transparent 40%,
-    rgba(255,255,255,0.18),
-    transparent 60%
-  );
-  transform: translateX(-100%);
-  animation: shine 8s infinite ease-in-out;
-}
+h1 { margin:0 0 4px; font-size:28px; }
+.sub { font-size:14px; color:#9aa3ad; margin-bottom:14px; }
 
-@keyframes shine {
-  0% { transform: translateX(-120%); }
-  60% { transform: translateX(120%); }
-  100% { transform: translateX(120%); }
-}
-
-.dashboard h2 {
-  margin: 0 0 12px;
-  font-size: 22px;
-}
-
-.dashboard div {
-  margin: 6px 0;
-  font-size: 15px;
-  color: var(--muted);
-}
-
-/* ================= CARDS / SECTIONS ================= */
-
-section,
-form,
-.person,
-.modal-content {
-  background: linear-gradient(
-    145deg,
-    rgba(255,255,255,0.10),
-    rgba(255,255,255,0.03)
-  );
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  border-radius: var(--radius);
-  padding: 18px;
-  border: 1px solid var(--stroke);
-  margin-bottom: 22px;
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.2);
-}
-
-/* ================= INPUTS ================= */
-
-input, textarea, select {
-  width: 100%;
-  padding: 14px 16px;
-  margin-bottom: 14px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--soft);
+/* CARD */
+.card {
+  background: #0f1112;
   border-radius: 16px;
-  color: var(--text);
-  font-size: 15px;
-}
-
-textarea {
-  min-height: 80px;
-  resize: none;
-}
-
-/* ================= STATUS BUTTONS ================= */
-
-.status-buttons {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.status-buttons button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 18px;
-  border: none;
-  background: rgba(255,255,255,0.08);
-  color: var(--muted);
-  font-weight: 600;
-}
-
-.status-buttons button.active {
-  background: radial-gradient(circle at top, var(--pink), var(--pink-deep));
-  color: #000;
-  box-shadow: 0 0 22px rgba(255,138,203,0.6);
-}
-
-/* ================= FOCUS CONTROL ================= */
-
-.focus-control {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 14px 0 18px;
-}
-
-.focus-control button {
-  width: 46%;
-  padding: 14px 0;
-  font-size: 20px;
-  border-radius: 20px;
-  border: none;
-  background: radial-gradient(circle at top, var(--pink), var(--pink-deep));
-  color: #000;
-  box-shadow: 0 0 20px rgba(255,138,203,0.6);
-}
-
-.focus-control span {
-  width: 8%;
-  text-align: center;
-  font-size: 18px;
-}
-
-/* ================= ADD BUTTON ================= */
-
-button[type="submit"] {
-  width: 100%;
   padding: 16px;
-  border-radius: 22px;
-  border: none;
-  font-size: 18px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #45ffb1, #1fd68a);
-  color: #000;
-  box-shadow: 0 0 30px rgba(50,255,154,0.6);
+  margin-bottom: 14px;
 }
 
-/* ================= PERSON CARD ================= */
-
-.person {
-  position: relative;
-}
-
-.person.glow {
-  box-shadow:
-    0 0 30px rgba(255,138,203,0.7),
-    inset 0 1px 0 rgba(255,255,255,0.3);
-}
-
-.focus-bar {
-  height: 8px;
-  background: rgba(255,255,255,0.12);
-  border-radius: 6px;
-  overflow: hidden;
-  margin: 10px 0;
-}
-
-.focus-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--pink), var(--pink-deep));
-}
-
-/* ================= MODAL ================= */
-
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  width: 92%;
-  max-width: 420px;
-}
-
-/* ================= ACTION BUTTONS ================= */
-
-.card-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.card-actions button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 16px;
-  border: none;
-  background: rgba(255,255,255,0.1);
-  color: var(--text);
-}
-/* =========================
-   GLASS DASHBOARD (SAFE)
-   ========================= */
-
+/* DASHBOARD */
 .dashboard {
   position: relative;
-  background: rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 22px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015)),
+    radial-gradient(circle at top left, rgba(255,105,180,0.22), transparent 60%),
+    #0f1112;
   backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.12);
-  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
-/* light reflection sweep */
-.dashboard::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255,255,255,0.18) 45%,
-    transparent 70%
-  );
-  opacity: 0.4;
-  transform: translateX(-100%);
-  animation: dashSweep 6s ease-in-out infinite;
-  pointer-events: none;
-}
+.dashboard h3 { margin:0 0 12px; }
+.dash-item { margin-top:8px; font-size:15px; display:flex; gap:6px; align-items:center; }
+.dash-item span { font-weight:700; color:#ff9fcf; }
 
-@keyframes dashSweep {
-  0% { transform: translateX(-100%); }
-  50% { transform: translateX(100%); }
-  100% { transform: translateX(100%); }
-}
-/* =========================
-   PERSON CARD GLASS
-   ========================= */
+/* status small badge */
+.status { background:#0b0c0d; }
 
-.person {
-  position: relative;
+/* inputs */
+input, textarea, select, button {
+  width:100%;
+  margin-top:10px;
+  padding:12px;
+  border-radius:12px;
+  border:none;
   background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  color:#fff;
+  font-size:14px;
+}
+textarea { resize:none; min-height:80px; }
+
+/* status buttons */
+.status-buttons { display:flex; gap:10px; margin-top:8px; }
+.status-buttons button { flex:1; background:#1c1f22; color:#fff; border-radius:12px; padding:10px; border:none; }
+.status-buttons button.active { background: linear-gradient(135deg,#ff6aa2,#ff99c8); color:#000; font-weight:700; }
+
+/* focus control */
+.focus-control { display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; margin-top:10px; }
+.focus-control button { height:56px; font-size:26px; border-radius:18px; background: linear-gradient(135deg,#ff6aa2,#ff99c8); color:#000; border:none; }
+#focusValue { font-size:22px; font-weight:800; color:#ff99c8; text-align:center; }
+
+/* add button */
+button[type="submit"] { background: linear-gradient(135deg,#00d08a,#00f2a0); color:#000; font-weight:800; padding:14px; border-radius:12px; border:none; }
+
+/* people card */
+.person { border-radius:16px; padding:16px; background:#0f1112; margin-bottom:14px; transition: box-shadow .18s ease, transform .18s ease; position:relative; }
+.person .sub { color:#9aa3ad; display:block; margin-top:6px; }
+
+/* focus bar */
+.focus-bar { height:8px; background:#1c1f22; border-radius:6px; overflow:hidden; margin-top:8px; }
+.focus-fill { height:100%; background:#00d08a; transition: width .33s ease; }
+
+/* advice */
+.advice { margin-top:8px; font-size:13px; color:#9aa3ad; }
+
+/* card actions */
+.card-actions { display:flex; gap:12px; margin-top:14px; }
+.card-actions button { flex:1; background: rgba(255,255,255,0.05); color:#fff; padding:12px; border-radius:12px; border:none; }
+
+/* low-focus / paused */
+.person.paused {
+  border: 1px solid rgba(255,80,80,0.2);
+  box-shadow: 0 10px 40px rgba(255,40,40,0.08);
+  transform: translateY(-2px);
 }
 
+/* high focus glow */
 .person.glow {
-  box-shadow:
-    0 0 18px rgba(255,105,180,0.35),
-    0 0 40px rgba(255,105,180,0.15);
+  border: 1px solid rgba(0,208,138,0.18);
+  box-shadow: 0 16px 46px rgba(0,208,138,0.12);
+  transform: translateY(-3px);
 }
 
-.person:hover {
-  transform: translateY(-2px) scale(1.01);
-}
-/* =========================
-   SOFT UI MOTION
-   ========================= */
-
-button,
-.status-buttons button {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+/* special low-focus (soft glow red) for emphasis when focus <= 20 but not paused flag */
+.person.low-focus {
+  border: 1px solid rgba(255,140,100,0.12);
+  box-shadow: 0 12px 36px rgba(255,80,80,0.06);
 }
 
-button:active {
-  transform: scale(0.97);
-}
-/* =========================
-   FIX: Edit Modal Layering
-   ========================= */
+/* edit modal */
+.edit-modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.6); z-index:9999; }
+.edit-modal.hidden { display:none !important; }
+.edit-box { width:92%; max-width:420px; border-radius:14px; padding:18px; background: linear-gradient(180deg,#0b0b0b,#111214); box-shadow:0 20px 40px rgba(0,0,0,0.6); color:#fff; display:flex; flex-direction:column; gap:12px; }
 
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
+/* auto-row (fix placement) */
+.auto-row { display:flex; align-items:center; gap:12px; margin-top:6px; }
+.auto-row input[type="checkbox"] { width:22px; height:22px; margin:0; accent-color:#ff99c8; }
+.auto-row .auto-text { font-size:14px; color:#fff; line-height:1.1; }
 
-.modal.hidden {
-  display: none;
+/* view history */
+#viewHistory { margin-top:6px; background: rgba(255,255,255,0.03); }
+
+/* small responsive */
+@media (max-width:420px) {
+  .focus-control button { height:52px; }
+  .edit-box { padding:14px; }
 }
 
-.modal-content {
-  width: 92%;
-  max-width: 420px;
-  max-height: 90vh;
-  overflow-y: auto;
-
-  background: linear-gradient(
-    160deg,
-    rgba(255,255,255,0.08),
-    rgba(255,255,255,0.03)
-  );
-
-  border-radius: 22px;
-  padding: 18px;
-  box-shadow:
-    0 20px 60px rgba(0,0,0,0.6),
-    inset 0 0 0 1px rgba(255,255,255,0.08);
-}
-/* =========================
-   Dashboard Glass Polish
-   ========================= */
-
-.dashboard {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(
-    145deg,
-    rgba(255,255,255,0.10),
-    rgba(255,255,255,0.04)
-  );
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-.dashboard::after {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.12),
-    transparent
-  );
-  transform: rotate(12deg);
-  opacity: 0.4;
-  pointer-events: none;
-}
-/* =========================
-   Person Card Stability
-   ========================= */
-
-.person {
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease;
-}
-
-.person.glow {
-  box-shadow:
-    0 0 0 1px rgba(255,105,180,0.35),
-    0 12px 30px rgba(255,105,180,0.25);
-}
-
-.person:active {
-  transform: scale(0.985);
+/* accessibility reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .person.glow, .person.paused, .person.low-focus { animation: none; transform:none; box-shadow:none; }
 }
