@@ -523,3 +523,78 @@ button[type="submit"] {
 .dashboard {
   background-clip: padding-box;
 }
+/* ===============================
+   DASHBOARD ROMANTIC MOTION
+   iOS SAFE — NO SCROLL BUGS
+   =============================== */
+
+.dashboard {
+  position: relative;
+  overflow: hidden;
+  animation: dashboardFloatIn 0.6s ease-out both;
+}
+
+/* soft breathing glow */
+.dashboard {
+  box-shadow:
+    0 22px 48px rgba(0,0,0,0.7),
+    0 0 0 rgba(255,140,190,0.0);
+  animation:
+    dashboardFloatIn 0.6s ease-out both,
+    dashboardBreath 6s ease-in-out infinite;
+}
+
+/* slow romantic gradient drift */
+.dashboard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255,120,180,0.12),
+    rgba(255,255,255,0.02),
+    rgba(120,200,255,0.08)
+  );
+  opacity: 0.25;
+  pointer-events: none;
+  animation: dashboardGlowShift 12s ease-in-out infinite;
+}
+
+/* animations */
+@keyframes dashboardFloatIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dashboardBreath {
+  0%, 100% {
+    box-shadow:
+      0 22px 48px rgba(0,0,0,0.7),
+      0 0 0 rgba(255,140,190,0.0);
+  }
+  50% {
+    box-shadow:
+      0 26px 58px rgba(0,0,0,0.8),
+      0 0 32px rgba(255,140,190,0.25);
+  }
+}
+
+@keyframes dashboardGlowShift {
+  0%   { filter: hue-rotate(0deg); }
+  50%  { filter: hue-rotate(8deg); }
+  100% { filter: hue-rotate(0deg); }
+}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .dashboard,
+  .dashboard::after {
+    animation: none;
+  }
+}
