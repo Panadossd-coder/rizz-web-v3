@@ -200,23 +200,19 @@ if (isBetrayal) {
 }
 
   // positive reward (controlled by system)
-// allow external confirmations to bypass the posCount check
+let reward = 0;
+
 if (!negatedPositive && (posCount > negCount || isExternalLove) && activityBoost === 0) {
   const phrase = normalizeText(raw);
-  // prefer using the person object if available (falls back safely)
   const personForEval = (typeof windowPerson !== "undefined") ? windowPerson : null;
-  let reward = evaluatePositiveReward(personForEval, phrase);
+  reward = evaluatePositiveReward(personForEval, phrase);
 
-  // external confirmation (she said she loves me) guarantees a minimum reward
   if (isExternalLove) {
-    reward = Math.max(reward, 4); // keep your existing policy: external = stronger
+    reward = Math.max(reward, 4);
   }
-
-  delta += reward;
 }
 
-  delta += reward;
-}
+delta += reward;
 
 
     // sentiment nudges
