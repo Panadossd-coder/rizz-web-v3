@@ -1,0 +1,231 @@
+/* =========================
+   RIZZ WEB v2.4 — STABLE GLASS UI
+   SAFE FULL RESTORE
+   ========================= */
+
+:root {
+  --bg: #0b0c10;
+  --glass: rgba(255,255,255,0.08);
+  --glass-strong: rgba(255,255,255,0.12);
+  --border: rgba(255,255,255,0.18);
+  --pink: #ff7eb3;
+  --pink-soft: rgba(255,126,179,0.35);
+  --green: #2af598;
+  --text: #f5f5f7;
+  --muted: rgba(255,255,255,0.6);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  padding: 16px;
+  background: radial-gradient(circle at top, #151720, var(--bg));
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui;
+  color: var(--text);
+}
+
+/* ---------- GLASS BASE ---------- */
+.dashboard,
+form,
+.person,
+.modal-content {
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0.03)
+  );
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- DASHBOARD ---------- */
+.dashboard {
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.dashboard::after {
+  content: "";
+  position: absolute;
+  top: -120%;
+  left: -40%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(255,255,255,0.35),
+    transparent 60%
+  );
+  animation: sweep 8s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes sweep {
+  0% { transform: translateX(-50%) rotate(0deg); }
+  100% { transform: translateX(50%) rotate(360deg); }
+}
+
+/* ---------- HEADINGS ---------- */
+h2, h3 {
+  margin-top: 0;
+  letter-spacing: 0.3px;
+}
+
+/* ---------- FORM ---------- */
+form {
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+textarea {
+  min-height: 80px;
+}
+
+/* ---------- STATUS BUTTONS ---------- */
+.status-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.status-buttons button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255,255,255,0.12);
+  color: var(--text);
+  transition: 0.3s ease;
+}
+
+.status-buttons button.active {
+  background: linear-gradient(135deg, var(--pink), #ffb7d5);
+  box-shadow: 0 0 20px var(--pink-soft);
+}
+
+/* ---------- FOCUS CONTROL ---------- */
+.focus-control {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.focus-control button {
+  flex: 1;
+  padding: 16px;
+  font-size: 22px;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(135deg, var(--pink), #ffb7d5);
+  color: #000;
+}
+
+#focusValue {
+  min-width: 60px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* ---------- ADD BUTTON ---------- */
+form button[type="submit"] {
+  background: linear-gradient(135deg, var(--green), #6affc1);
+  border: none;
+  border-radius: 20px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* ---------- PERSON CARD ---------- */
+.person {
+  padding: 18px;
+  margin-bottom: 14px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.person.glow {
+  box-shadow:
+    0 0 30px rgba(255,126,179,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.person.paused {
+  opacity: 0.55;
+}
+
+.focus-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.2);
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.focus-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--pink), var(--green));
+}
+
+/* ---------- MODAL ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  width: 92%;
+  max-width: 420px;
+  padding: 20px;
+}
+
+/* ---------- EDIT BUTTONS ---------- */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 14px;
+  border-radius: 16px;
+  border: none;
+  background: rgba(255,255,255,0.18);
+  color: var(--text);
+}
