@@ -267,6 +267,24 @@ button[type="submit"] {
     0 22px 48px rgba(0,0,0,0.7),
     inset 0 1px 0 rgba(255,255,255,0.06);
 }
+/* ===============================
+   STEP 3 — Dashboard Romantic Entrance
+   =============================== */
+
+@keyframes dashboardReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dashboard {
+  animation: dashboardReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
 /* ================================
    STEP 1C — Person card depth
    ================================ */
@@ -377,12 +395,37 @@ button[type="submit"] {
   box-shadow:
     0 12px 28px rgba(0, 0, 0, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  transition: box-shadow 0.35s ease, transform 0.35s ease;
+  transition:
+  box-shadow 0.45s ease,
+  transform 0.35s ease,
+  background-color 0.6s ease;
+will-change: transform;
 }
 
 /* Subtle lift on hover / tap */
 .person:active {
   transform: translateY(-2px);
+}
+/* ===============================
+   STEP 2 — Romantic Breathing Motion
+   =============================== */
+
+@keyframes romanticBreath {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.012);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* breathing only for emotionally active cards */
+.person.glow,
+.person.glow-high {
+  animation: romanticBreath 6.5s ease-in-out infinite;
 }
 
 /* 🌟 Active glow (default soft glow) */
