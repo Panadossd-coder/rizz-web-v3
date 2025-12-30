@@ -543,6 +543,42 @@ will-change: transform;
   height: 100%;
   border-radius: inherit;
 }
+/* ===============================
+   STEP 5 — Romantic Liquid Motion
+   =============================== */
+
+.focus-fill {
+  position: relative;
+  overflow: hidden;
+}
+
+.focus-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.0) 30%,
+    rgba(255,255,255,0.35) 45%,
+    rgba(255,255,255,0.0) 60%
+  );
+  transform: translateX(-120%);
+  animation: liquidFlow 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes liquidFlow {
+  0%   { transform: translateX(-120%); }
+  45%  { transform: translateX(120%); }
+  100% { transform: translateX(120%); }
+}
+
+/* calmer emotion when low / paused */
+.person.low-focus .focus-fill::after,
+.person.paused .focus-fill::after {
+  opacity: 0.15;
+  animation-duration: 9s;
+}
 
 
 /* Premium static focus highlight (no animation, iOS-safe) */
