@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---------- NOTES INTELLIGENCE ----------
   // This function returns: { delta, signals:[], tags:[], severity, activityBoost, reason }
-  function analyzeNotes(rawText) {
+  function analyzeNotes(rawText, person) {
     const raw = (rawText || "").trim();
     // normalize note for repetition detection
 const normalized = raw.toLowerCase().replace(/\s+/g, " ").trim();
