@@ -1,18 +1,23 @@
-/* =========================
-   RIZZ WEB v2.4 — STABLE GLASS UI
-   SAFE FULL RESTORE
-   ========================= */
+/* ===============================
+   Rizz Web v2.4 — Visual Lock
+   Glass + Romantic Motion (SAFE)
+   =============================== */
 
 :root {
-  --bg: #0b0c10;
-  --glass: rgba(255,255,255,0.08);
-  --glass-strong: rgba(255,255,255,0.12);
-  --border: rgba(255,255,255,0.18);
-  --pink: #ff7eb3;
-  --pink-soft: rgba(255,126,179,0.35);
-  --green: #2af598;
-  --text: #f5f5f7;
-  --muted: rgba(255,255,255,0.6);
+  --bg: #0b0d12;
+  --card: rgba(255, 255, 255, 0.08);
+  --stroke: rgba(255, 255, 255, 0.18);
+  --soft: rgba(255, 255, 255, 0.12);
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.65);
+
+  --pink: #ff8acb;
+  --pink-deep: #ff5fa8;
+  --green: #32ff9a;
+  --blue: #4cc3ff;
+
+  --radius: 22px;
+  --blur: 18px;
 }
 
 * {
@@ -20,188 +25,211 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-body {
+html, body {
   margin: 0;
-  padding: 16px;
-  background: radial-gradient(circle at top, #151720, var(--bg));
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui;
+  padding: 0;
+  background: radial-gradient(1200px 600px at top, #151823, #07090d);
   color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui;
 }
 
-/* ---------- GLASS BASE ---------- */
-.dashboard,
+body {
+  padding: 18px 14px 80px;
+}
+
+/* ================= DASHBOARD ================= */
+
+.dashboard {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.14),
+    rgba(255,255,255,0.04)
+  );
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-bottom: 22px;
+  border: 1px solid var(--stroke);
+  box-shadow:
+    0 25px 50px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+  overflow: hidden;
+}
+
+/* glass reflection sweep */
+.dashboard::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(255,255,255,0.18),
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  animation: shine 8s infinite ease-in-out;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-120%); }
+  60% { transform: translateX(120%); }
+  100% { transform: translateX(120%); }
+}
+
+.dashboard h2 {
+  margin: 0 0 12px;
+  font-size: 22px;
+}
+
+.dashboard div {
+  margin: 6px 0;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+/* ================= CARDS / SECTIONS ================= */
+
+section,
 form,
 .person,
 .modal-content {
   background: linear-gradient(
-    120deg,
-    rgba(255,255,255,0.12),
+    145deg,
+    rgba(255,255,255,0.10),
     rgba(255,255,255,0.03)
   );
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid var(--border);
-  border-radius: 22px;
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border-radius: var(--radius);
+  padding: 18px;
+  border: 1px solid var(--stroke);
+  margin-bottom: 22px;
   box-shadow:
-    0 20px 40px rgba(0,0,0,0.45),
+    0 18px 40px rgba(0,0,0,0.5),
     inset 0 1px 0 rgba(255,255,255,0.2);
-  position: relative;
-  overflow: hidden;
 }
 
-/* ---------- DASHBOARD ---------- */
-.dashboard {
-  padding: 18px;
-  margin-bottom: 20px;
-}
+/* ================= INPUTS ================= */
 
-.dashboard::after {
-  content: "";
-  position: absolute;
-  top: -120%;
-  left: -40%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    120deg,
-    transparent 40%,
-    rgba(255,255,255,0.35),
-    transparent 60%
-  );
-  animation: sweep 8s infinite linear;
-  pointer-events: none;
-}
-
-@keyframes sweep {
-  0% { transform: translateX(-50%) rotate(0deg); }
-  100% { transform: translateX(50%) rotate(360deg); }
-}
-
-/* ---------- HEADINGS ---------- */
-h2, h3 {
-  margin-top: 0;
-  letter-spacing: 0.3px;
-}
-
-/* ---------- FORM ---------- */
-form {
-  padding: 18px;
-  margin-bottom: 20px;
-}
-
-input,
-textarea,
-select {
+input, textarea, select {
   width: 100%;
-  background: rgba(0,0,0,0.35);
-  border: 1px solid var(--border);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--soft);
   border-radius: 16px;
-  padding: 14px;
   color: var(--text);
-  margin-bottom: 12px;
+  font-size: 15px;
 }
 
 textarea {
   min-height: 80px;
+  resize: none;
 }
 
-/* ---------- STATUS BUTTONS ---------- */
+/* ================= STATUS BUTTONS ================= */
+
 .status-buttons {
   display: flex;
   gap: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .status-buttons button {
   flex: 1;
   padding: 12px;
-  border-radius: 999px;
+  border-radius: 18px;
   border: none;
-  background: rgba(255,255,255,0.12);
-  color: var(--text);
-  transition: 0.3s ease;
+  background: rgba(255,255,255,0.08);
+  color: var(--muted);
+  font-weight: 600;
 }
 
 .status-buttons button.active {
-  background: linear-gradient(135deg, var(--pink), #ffb7d5);
-  box-shadow: 0 0 20px var(--pink-soft);
+  background: radial-gradient(circle at top, var(--pink), var(--pink-deep));
+  color: #000;
+  box-shadow: 0 0 22px rgba(255,138,203,0.6);
 }
 
-/* ---------- FOCUS CONTROL ---------- */
+/* ================= FOCUS CONTROL ================= */
+
 .focus-control {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 14px;
+  justify-content: space-between;
+  margin: 14px 0 18px;
 }
 
 .focus-control button {
-  flex: 1;
-  padding: 16px;
-  font-size: 22px;
+  width: 46%;
+  padding: 14px 0;
+  font-size: 20px;
   border-radius: 20px;
   border: none;
-  background: linear-gradient(135deg, var(--pink), #ffb7d5);
+  background: radial-gradient(circle at top, var(--pink), var(--pink-deep));
   color: #000;
+  box-shadow: 0 0 20px rgba(255,138,203,0.6);
 }
 
-#focusValue {
-  min-width: 60px;
+.focus-control span {
+  width: 8%;
   text-align: center;
-  font-weight: 600;
+  font-size: 18px;
 }
 
-/* ---------- ADD BUTTON ---------- */
-form button[type="submit"] {
-  background: linear-gradient(135deg, var(--green), #6affc1);
-  border: none;
-  border-radius: 20px;
+/* ================= ADD BUTTON ================= */
+
+button[type="submit"] {
+  width: 100%;
   padding: 16px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 22px;
+  border: none;
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #45ffb1, #1fd68a);
   color: #000;
+  box-shadow: 0 0 30px rgba(50,255,154,0.6);
 }
 
-/* ---------- PERSON CARD ---------- */
+/* ================= PERSON CARD ================= */
+
 .person {
-  padding: 18px;
-  margin-bottom: 14px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
 }
 
 .person.glow {
   box-shadow:
-    0 0 30px rgba(255,126,179,0.5),
+    0 0 30px rgba(255,138,203,0.7),
     inset 0 1px 0 rgba(255,255,255,0.3);
 }
 
-.person.paused {
-  opacity: 0.55;
-}
-
 .focus-bar {
-  width: 100%;
   height: 8px;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.12);
+  border-radius: 6px;
   overflow: hidden;
-  margin: 8px 0;
+  margin: 10px 0;
 }
 
 .focus-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--pink), var(--green));
+  background: linear-gradient(90deg, var(--pink), var(--pink-deep));
 }
 
-/* ---------- MODAL ---------- */
+/* ================= MODAL ================= */
+
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.65);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 1000;
 }
 
 .modal.hidden {
@@ -211,21 +239,21 @@ form button[type="submit"] {
 .modal-content {
   width: 92%;
   max-width: 420px;
-  padding: 20px;
 }
 
-/* ---------- EDIT BUTTONS ---------- */
-.modal-actions {
+/* ================= ACTION BUTTONS ================= */
+
+.card-actions {
   display: flex;
   gap: 10px;
   margin-top: 14px;
 }
 
-.modal-actions button {
+.card-actions button {
   flex: 1;
-  padding: 14px;
+  padding: 12px;
   border-radius: 16px;
   border: none;
-  background: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.1);
   color: var(--text);
 }
