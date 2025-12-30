@@ -108,6 +108,15 @@ const positive = [
 const hasNegation = /\b(not|don't|dont|never|no)\b/.test(t);
 const hasPositiveWord = positive.some(w => t.includes(w));
 const negatedPositive = hasNegation && hasPositiveWord;
+// external confirmation (stronger than self-affirmation)
+const externalLovePatterns = [
+  "she said she loves me",
+  "she told me she loves me",
+  "she said she loves me too",
+  "she told me she loves me too"
+];
+
+const isExternalLove = externalLovePatterns.some(p => t.includes(p));
     const negative = ["ignore", "ignored", "no reply", "doesn't reply", "does not reply", "didn't reply", "dry", "hate", "hates", "not love", "does not love", "doesn't love", "rejected", "ghost", "ghosted", "argue", "fight", "cheat", "cheated", "cheating", "betray", "betrayed"];
     const activityMap = [
       { kws: ["we had sex", "made love", "had sex", "we slept"], v: 20, tag: "sex" },
@@ -193,7 +202,12 @@ if (isBetrayal) {
     // positive reward (controlled by system decision)
 if (!negatedPositive && posCount > negCount && activityBoost === 0) {
   const phrase = normalizeText(raw);
-  const reward = evaluatePositiveReward(window.__currentPerson, phrase);
+  let reward = evaluatePositiveReward(window.__currentPerson, phrase);
+
+  if (isExternalLove) {
+    reward = Math.max(reward, 4); // stronger but capped
+  }
+
   delta += reward;
 }
 
