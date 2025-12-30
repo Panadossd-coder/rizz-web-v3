@@ -1,172 +1,279 @@
 /* =========================
-   Rizz Web — Version 2.4
-   Notes Authority — UI Fixes (Full CSS)
+   RIZZ WEB v2.4 — SAFE FULL CSS
+   Glass • Romantic • Stable
    ========================= */
 
-* { box-sizing: border-box; }
+:root {
+  --pink: #ff7abf;
+  --pink-soft: rgba(255, 122, 191, 0.35);
+  --glass-bg: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.22);
+  --dark: #0b0b0f;
+}
 
-html, body {
-  height: 100%;
-  margin: 0;
-  background: #000;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: none;
+* {
+  box-sizing: border-box;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: radial-gradient(circle at top, #1a1a24, #050509);
   color: #fff;
-  -webkit-font-smoothing: antialiased;
-  background: radial-gradient(circle at top, #0a0b0e, #000);
 }
 
-/* APP */
-.app {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 20px;
-  padding-bottom: env(safe-area-inset-bottom);
-}
+/* ================= DASHBOARD ================= */
 
-h1 { margin:0 0 4px; font-size:28px; }
-.sub { font-size:14px; color:#9aa3ad; margin-bottom:14px; }
-
-/* CARD */
-.card {
-  background: #0f1112;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 14px;
-}
-
-/* DASHBOARD */
 .dashboard {
   position: relative;
-  border-radius: 20px;
   padding: 22px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015)),
-    radial-gradient(circle at top left, rgba(255,105,180,0.22), transparent 60%),
-    #0f1112;
+  margin-bottom: 22px;
+  border-radius: 22px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.06)
+  );
+
   backdrop-filter: blur(18px);
-  box-shadow: 0 20px 45px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
+  -webkit-backdrop-filter: blur(18px);
+
+  border: 1px solid var(--glass-border);
+
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.45);
+
+  overflow: hidden;
 }
 
-.dashboard h3 { margin:0 0 12px; }
-.dash-item { margin-top:8px; font-size:15px; display:flex; gap:6px; align-items:center; }
-.dash-item span { font-weight:700; color:#ff9fcf; }
+/* white glass reflection */
+.dashboard::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 60%;
+  height: 200%;
 
-/* status small badge */
-.status { background:#0b0c0d; }
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
 
-/* inputs */
-input, textarea, select, button {
-  width:100%;
-  margin-top:10px;
-  padding:12px;
-  border-radius:12px;
-  border:none;
-  background: rgba(255,255,255,0.04);
-  color:#fff;
-  font-size:14px;
-}
-textarea { resize:none; min-height:80px; }
-
-/* status buttons */
-.status-buttons { display:flex; gap:10px; margin-top:8px; }
-.status-buttons button { flex:1; background:#1c1f22; color:#fff; border-radius:12px; padding:10px; border:none; }
-.status-buttons button.active { background: linear-gradient(135deg,#ff6aa2,#ff99c8); color:#000; font-weight:700; }
-
-/* focus control */
-.focus-control { display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; margin-top:10px; }
-.focus-control button { height:56px; font-size:26px; border-radius:18px; background: linear-gradient(135deg,#ff6aa2,#ff99c8); color:#000; border:none; }
-#focusValue { font-size:22px; font-weight:800; color:#ff99c8; text-align:center; }
-
-/* add button */
-button[type="submit"] { background: linear-gradient(135deg,#00d08a,#00f2a0); color:#000; font-weight:800; padding:14px; border-radius:12px; border:none; }
-
-/* people card */
-.person { border-radius:16px; padding:16px; background:#0f1112; margin-bottom:14px; transition: box-shadow .18s ease, transform .18s ease; position:relative; }
-.person .sub { color:#9aa3ad; display:block; margin-top:6px; }
-
-/* focus bar */
-.focus-bar { height:8px; background:#1c1f22; border-radius:6px; overflow:hidden; margin-top:8px; }
-.focus-fill { height:100%; background:#00d08a; transition: width .33s ease; }
-
-/* advice */
-.advice { margin-top:8px; font-size:13px; color:#9aa3ad; }
-
-/* card actions */
-.card-actions { display:flex; gap:12px; margin-top:14px; }
-.card-actions button { flex:1; background: rgba(255,255,255,0.05); color:#fff; padding:12px; border-radius:12px; border:none; }
-
-/* low-focus / paused */
-.person.paused {
-  border: 1px solid rgba(255,80,80,0.2);
-  box-shadow: 0 10px 40px rgba(255,40,40,0.08);
-  transform: translateY(-2px);
+  transform: rotate(25deg);
+  animation: glassSweep 7s ease-in-out infinite;
+  pointer-events: none;
 }
 
-/* high focus glow */
-.person.glow {
-  border: 1px solid rgba(0,208,138,0.18);
-  box-shadow: 0 16px 46px rgba(0,208,138,0.12);
-  transform: translateY(-3px);
+@keyframes glassSweep {
+  0% { left: -60%; opacity: 0; }
+  20% { opacity: 0.35; }
+  50% { left: 120%; opacity: 0.15; }
+  100% { left: 120%; opacity: 0; }
 }
 
-/* special low-focus (soft glow red) for emphasis when focus <= 20 but not paused flag */
-.person.low-focus {
-  border: 1px solid rgba(255,140,100,0.12);
-  box-shadow: 0 12px 36px rgba(255,80,80,0.06);
+.dashboard h2 {
+  margin: 0 0 12px;
 }
 
-/* edit modal */
-.edit-modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.6); z-index:9999; }
-.edit-modal.hidden { display:none !important; }
-.edit-box { width:92%; max-width:420px; border-radius:14px; padding:18px; background: linear-gradient(180deg,#0b0b0b,#111214); box-shadow:0 20px 40px rgba(0,0,0,0.6); color:#fff; display:flex; flex-direction:column; gap:12px; }
-
-/* auto-row (fix placement) */
-.auto-row { display:flex; align-items:center; gap:12px; margin-top:6px; }
-.auto-row input[type="checkbox"] { width:22px; height:22px; margin:0; accent-color:#ff99c8; }
-.auto-row .auto-text { font-size:14px; color:#fff; line-height:1.1; }
-
-/* view history */
-#viewHistory { margin-top:6px; background: rgba(255,255,255,0.03); }
-
-/* small responsive */
-@media (max-width:420px) {
-  .focus-control button { height:52px; }
-  .edit-box { padding:14px; }
+.dashboard div {
+  margin-top: 6px;
 }
 
-/* accessibility reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .person.glow, .person.paused, .person.low-focus { animation: none; transform:none; box-shadow:none; }
-}
-/* =========================
-   DASHBOARD STATE FEEDBACK
-   ========================= */
+/* ================= FORM ================= */
 
-.dashboard {
-  background: linear-gradient(135deg, #1c1c1e, #121214);
-  border-radius: 18px;
+form {
+  background: rgba(255, 255, 255, 0.03);
   padding: 18px;
-  transition: box-shadow 0.35s ease, background 0.35s ease;
+  border-radius: 20px;
+  margin-bottom: 22px;
 }
 
-/* Active focus glow */
-.dashboard.has-focus {
-  box-shadow: 0 0 25px rgba(255, 105, 180, 0.35);
-  background: linear-gradient(135deg, #2a1a22, #181016);
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  outline: none;
 }
 
-/* Action text emphasis */
-.dashboard.has-focus #dashAction {
-  color: #ff7eb3;
-  font-weight: 600;
+textarea {
+  min-height: 80px;
+  resize: none;
 }
 
-/* Calm state */
-.dashboard.no-focus #dashAction {
-  color: #b0b0b5;
+/* ================= STATUS BUTTONS ================= */
+
+.status-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
 }
+
+.status-buttons button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.status-buttons button.active {
+  background: linear-gradient(135deg, #ff7abf, #ff9ad5);
+}
+
+/* ================= FOCUS CONTROL ================= */
+
+.focus-control {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.focus-control button {
+  flex: 1;
+  padding: 14px;
+  font-size: 20px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ff7abf, #ff9ad5);
+  border: none;
+  color: white;
+}
+
+#focusValue {
+  font-size: 22px;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* ================= PEOPLE CARDS ================= */
+
+.person {
+  position: relative;
+  padding: 18px;
+  margin-bottom: 16px;
+  border-radius: 20px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.14),
+    rgba(255, 255, 255, 0.05)
+  );
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.45);
+
+  transition:
+    transform 0.6s ease,
+    box-shadow 0.6s ease;
+}
+
+/* romantic breathing glow */
+.person.glow {
+  animation: breathe 4s ease-in-out infinite;
+  box-shadow:
+    0 0 30px rgba(255, 122, 191, 0.45),
+    0 0 60px rgba(255, 122, 191, 0.25);
+}
+
+@keyframes breathe {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.01); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.person.paused {
+  opacity: 0.55;
+}
+
+.person .sub {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-top: 6px;
+}
+
+/* ================= FOCUS BAR ================= */
+
+.focus-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.focus-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff7abf, #ffb3dd);
+  border-radius: 6px;
+}
+
+/* ================= ACTIONS ================= */
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.card-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 14px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+/* ================= MODAL ================= */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  width: 92%;
+  max-width: 420px;
+  padding: 20px;
+  border-radius: 22px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.06)
+  );
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+/* ================= SAFE END ================= */
