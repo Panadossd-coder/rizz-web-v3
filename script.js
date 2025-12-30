@@ -513,7 +513,7 @@ function evaluatePositiveReward(person, phrase) {
       // quick note processing
       const quick = form.quickNote ? (form.quickNote.value || "").trim() : "";
       if (quick) {
-        const analysis = analyzeNotes(quick);
+        const analysis = analyzeNotes(quick, p);
 
         // betrayal triggers trust lock
         if (analysis.signals && analysis.signals.includes("betrayal")) {
