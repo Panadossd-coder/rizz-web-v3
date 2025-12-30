@@ -273,3 +273,47 @@ button[type="submit"] {
 .person:active {
   transform: scale(0.985);
 }
+/* ===============================
+   SAFE GLASS REFLECTION (STEP 1)
+   Scoped, non-breaking
+   =============================== */
+
+.dashboard,
+.person {
+  position: relative;
+  overflow: hidden;
+}
+
+/* soft moving reflection */
+.dashboard::before,
+.person::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255,255,255,0.08) 45%,
+    rgba(255,255,255,0.14) 50%,
+    rgba(255,255,255,0.08) 55%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  animation: glassSweep 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* animation */
+@keyframes glassSweep {
+  0%   { transform: translateX(-120%); }
+  40%  { transform: translateX(120%); }
+  100% { transform: translateX(120%); }
+}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .dashboard::before,
+  .person::before {
+    animation: none;
+  }
+}
