@@ -236,3 +236,40 @@ button[type="submit"] {
     height: 52px;
   }
 }
+/* ================================
+   STEP 1A — Reset base card layers
+   ================================ */
+
+.card {
+  backdrop-filter: none !important;
+  background: #0f1112 !important;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.55);
+}
+/* ================================
+   STEP 1B — Dashboard premium glass
+   ================================ */
+
+.dashboard {
+  backdrop-filter: blur(18px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015)),
+    radial-gradient(circle at top left, rgba(255,105,180,0.18), transparent 60%),
+    #0f1112;
+  box-shadow:
+    0 22px 48px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+/* ================================
+   STEP 1C — Person card depth
+   ================================ */
+
+.person {
+  background: #0f1112;
+  backdrop-filter: none;
+  box-shadow: 0 12px 26px rgba(0,0,0,0.55);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.person:active {
+  transform: scale(0.985);
+}
