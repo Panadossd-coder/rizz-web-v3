@@ -190,10 +190,13 @@ if (isBetrayal) {
   delta -= 5;
 }
 
-    // positive words can increase only if NOT negated
+    // positive reward (controlled by system decision)
 if (!negatedPositive && posCount > negCount && activityBoost === 0) {
-  delta += Math.min(8, posCount * 2);
+  const phrase = normalizeText(raw);
+  const reward = evaluatePositiveReward(window.__currentPerson, phrase);
+  delta += reward;
 }
+
 
     // sentiment nudges
     delta += sentiment;
