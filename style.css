@@ -268,6 +268,40 @@ button[type="submit"] {
     inset 0 1px 0 rgba(255,255,255,0.06);
 }
 /* ===============================
+   STEP 6 — Dashboard Romantic Drift
+   =============================== */
+
+.dashboard {
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 150, 200, 0.10),
+    transparent 65%
+  );
+  animation: dashboardBreath 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes dashboardBreath {
+  0%   { transform: scale(1) translateY(0); opacity: 0.45; }
+  50%  { transform: scale(1.05) translateY(-4px); opacity: 0.65; }
+  100% { transform: scale(1) translateY(0); opacity: 0.45; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .dashboard::after {
+    animation: none;
+  }
+}
+/* ===============================
    STEP 3 — Dashboard Romantic Entrance
    =============================== */
 
