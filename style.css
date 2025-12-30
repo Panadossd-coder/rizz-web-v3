@@ -446,24 +446,9 @@ button[type="submit"] {
   pointer-events: none;
 }
 /* focused card gets romantic gradient edge */
-.person.glow::before {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 255, 180, 0.55),
-    rgba(255, 105, 180, 0.35),
-    rgba(0, 255, 180, 0.55)
-  );
-  animation: edgeFlow 6s linear infinite;
-}
 
-@keyframes edgeFlow {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
+
+
 .person.paused::before,
 .person.low-focus::before {
   background: linear-gradient(
@@ -489,37 +474,17 @@ button[type="submit"] {
   border-radius: inherit;
 }
 
-/* liquid light layer */
-.focus-fill::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -40%;
-  width: 40%;
-  height: 100%;
+
+/* Premium static focus highlight (no animation, iOS-safe) */
+.focus-fill {
   background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0.05),
-    rgba(255, 255, 255, 0.25),
-    rgba(255, 255, 255, 0.05)
+    90deg,
+    #00e39c,
+    #38f0b1
   );
-  filter: blur(4px);
-  animation: liquidFlow 4.8s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes liquidFlow {
-  0% {
-    transform: translateX(0%);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateX(160%);
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateX(320%);
-    opacity: 0.3;
-  }
+  box-shadow:
+    inset 0 0 0 rgba(255,255,255,0),
+    0 0 12px rgba(0, 227, 156, 0.35);
 }
 /* stronger liquid for focused cards */
 .person.glow .focus-fill::after {
