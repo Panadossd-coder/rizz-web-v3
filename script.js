@@ -431,14 +431,24 @@ function evaluatePositiveReward(person, phrase) {
       const card = document.createElement("div");
       card.className = "person";
       card.dataset.index = i;
+      // --- RESET ALL GLOW STATES ---
+card.classList.remove("glow", "glow-low", "glow-high");
 
-      // paused detection: either status === 'pause' OR focus <= 20
-      const isPaused = (p.status === "pause") || (p.focus <= 20);
-      if (isPaused) card.classList.add("paused");
-      else if (p.focus <= 20) card.classList.add("low-focus");
+      // paused detection
+const isPaused = (p.status === "pause");
 
-      // glow if high focus and not trustLocked
-      if (!isPaused && !p.trustLock && glowSet.has(p.name)) card.classList.add("glow");
+// paused always wins
+if (isPaused) {
+  card.classList.add("paused");
+} else if (!p.trustLock) {
+  if (p.focus < 30) {
+    card.classList.add("glow-low");
+  } else if (p.focus < 60) {
+    card.classList.add("glow");
+  } else {
+    card.classList.add("glow-high");
+  }
+}
 
       const reminderHtml = p.reminder ? `<div class="reminder">⏰ ${escapeHtml(p.reminder)}</div>` : "";
 
